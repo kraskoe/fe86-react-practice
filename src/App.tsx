@@ -1,27 +1,17 @@
 import React from 'react';
 import './App.css';
-import { Button, SecondaryButton } from './components/button';
-import {StyledUser} from './components/username';
-import Burger from './components/burger';
-import BurgerState from './context/burgerstate';
-import {StyledHeader} from './components/header';
-import {StyledSearch} from './components/search';
+import {Header} from './components/header';
+import {MainWrapper} from './components/mainWrapper';
+import {ThemeState} from './context/themeState';
 
 function App() {
 	return (
-		<div className='App'>
-			<StyledHeader>
-				<BurgerState>
-					<Burger />
-				</BurgerState>
-				<StyledSearch />
-				<StyledUser username='Artem Malkin'/>
-			</StyledHeader>
-			{/*<Button>Primary button</Button>*/}
-			{/*<Button disabled>Disabled button</Button>*/}
-			{/*<SecondaryButton>Secondary button</SecondaryButton>*/}
-			{/*<SecondaryButton disabled>Disabled secondary button</SecondaryButton>*/}
-		</div>
+		<ThemeState>
+			<MainWrapper>
+				<Header />
+				<div>some</div>
+			</MainWrapper>
+		</ThemeState>
 	);
 }
 

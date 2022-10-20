@@ -1,35 +1,18 @@
-import styled from 'styled-components';
-import {Theme} from '../../styles/theme';
+import {UserWrapper, UserInitials, UserName} from './style';
 
-type UsernameProps = {
-	className?: string,
-	username: string,
-	theme: Theme
+export type UserProps = {
+	user: string,
 }
 
-const User = (props: UsernameProps) => {
-	const name = props.username;
-	return <div className={props.className}>
-		<UserInitials username={name}>{name.split(' ').map(item => item[0])}</UserInitials>
-		<UserName username={name}>{name}</UserName>
-	</div>
+export const User = (props: UserProps) => {
+	const name = props.user;
+	return (
+		<UserWrapper>
+			<UserInitials>{name.split(' ').map(item => item[0])}</UserInitials>
+			<UserName>{name}</UserName>
+		</UserWrapper>
+	)
 }
 
-const UserName = styled.div`
-	display: inline-block;
-  color: ${(props: UsernameProps) => props.theme.primaryColor};
-	padding: 0.8em;
-  font-size: 1.5em;
-`
 
-const UserInitials = styled(UserName)`
-  background-color: ${(props: UsernameProps) => props.theme.primaryHoverBg};
-	border-radius: 5px;
-`
-
-export const StyledUser = styled(User)`
-  display: inline-block;
-  background-color: ${(props: UsernameProps) => props.theme.primaryBg};
-	padding: 1em 1.5em;
-`
 
