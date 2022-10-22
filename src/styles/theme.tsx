@@ -7,6 +7,8 @@ export type Theme = {
 	textSecondary: string,
 	textPale: string,
 	error: string,
+	outline: string,
+	menu: string,
 };
 
 export const lightTheme: Theme = {
@@ -18,6 +20,8 @@ export const lightTheme: Theme = {
 	textSecondary: '#000000',
 	textPale: '#8D8E97',
 	error: '#FD3419',
+	outline: '#DADADA',
+	menu: '#FFFFFF',
 };
 
 export const darkTheme: Theme = {
@@ -29,4 +33,6 @@ export const darkTheme: Theme = {
 	textSecondary: '#000000',
 	textPale: '#8D8E97',
 	error: '#FD3419',
+	outline: '#DADADA',
+	menu: '#FFFFFF',
 };

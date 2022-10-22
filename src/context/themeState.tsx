@@ -1,14 +1,18 @@
 import {lightTheme, darkTheme} from '../styles/theme';
-import {createContext, ReactNode, useState} from 'react';
+import {createContext, FC, PropsWithChildren, useState} from 'react';
 import {ThemeProvider} from 'styled-components';
 
-type ThemeContextProps = {
-	children?: ReactNode,
+type MainThemeContextProps = {
+	mainTheme: string,
+	toggleTheme: () => void,
 }
 
-export const MainThemeContext = createContext(() => {return});
+export const MainThemeContext = createContext<MainThemeContextProps>( {
+	mainTheme: '',
+	toggleTheme: () => {return},
+});
 
-export const ThemeState = ({children}: ThemeContextProps) => {
+export const ThemeState: FC<PropsWithChildren> = ({children}) => {
 	const [mainTheme, setTheme] = useState('light');
 
 	function toggleTheme()  {
@@ -16,7 +20,7 @@ export const ThemeState = ({children}: ThemeContextProps) => {
 	}
 
 	return (
-		<MainThemeContext.Provider value={() => toggleTheme()}>
+		<MainThemeContext.Provider value={{mainTheme, toggleTheme}}>
 			<ThemeProvider theme={mainTheme === 'light' ? lightTheme : darkTheme}>
 				{children}
 			</ThemeProvider>

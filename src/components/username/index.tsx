@@ -1,15 +1,14 @@
 import {UserWrapper, UserInitials, UserName} from './style';
+import {AuthContext} from '../../context/authState';
+import {useContext} from 'react';
 
-export type UserProps = {
-	user: string,
-}
+export const UserCredentials = () => {
+	const { user } = useContext(AuthContext);
 
-export const User = (props: UserProps) => {
-	const name = props.user;
 	return (
 		<UserWrapper>
-			<UserInitials>{name.split(' ').map(item => item[0])}</UserInitials>
-			<UserName>{name}</UserName>
+			<UserInitials>{user && user.username.split(' ').map(item => item[0])}</UserInitials>
+			<UserName>{user && user.username}</UserName>
 		</UserWrapper>
 	)
 }

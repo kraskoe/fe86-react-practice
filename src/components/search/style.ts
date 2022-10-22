@@ -4,12 +4,13 @@ export const SearchInput = styled.input`
 	display: block;
   background-color: transparent;
   color: ${(props) =>  props.theme.text};
-  font-size: 2em;
-  padding-left: 1em;
+  font-size: 1em;
+  padding: 0 1em;
   outline: none;
 	border: none;
 	height: 100%;
   flex: 1 0 auto;
+	width: 5rem;
   &::placeholder {
     color: ${(props) =>  props.theme.textPale};
   }

@@ -1,13 +1,9 @@
 import styled from 'styled-components';
 import { StyledHeaderButton } from './style';
-import {ReactNode} from 'react';
+import {FC, PropsWithChildren} from 'react';
 // import { Theme } from '../../styles/theme';
 
-type HeaderButtonProps = {
-	children: ReactNode,
-}
-
-export const HeaderButton = ({children}: HeaderButtonProps) => {
+export const HeaderButton: FC<PropsWithChildren> = ({children}) => {
 	return (
 		<div>
 			<StyledHeaderButton>

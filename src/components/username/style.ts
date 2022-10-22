@@ -9,7 +9,6 @@ export const UserName = styled.div`
 	display: inline-block;
   color: ${(props: UsernameProps) => props.theme.textPrimary};
 	padding: 0.8em;
-  font-size: 1em;
 `
 
 export const UserInitials = styled(UserName)`
@@ -18,7 +17,11 @@ export const UserInitials = styled(UserName)`
 `
 
 export const UserWrapper = styled.div`
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+	align-items: center;
   background-color: ${(props: UsernameProps) => props.theme.primary};
-	padding: 1em 1.5em;
+	padding: 0 1.5em;
+	font-weight: 600;
+	height: ${84/16}rem;
 `

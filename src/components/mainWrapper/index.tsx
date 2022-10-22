@@ -1,10 +1,6 @@
 import {StyledMainWrapper} from './style';
-import {ReactNode} from 'react';
+import {FC, PropsWithChildren} from 'react';
 
-type MainWrapperProps = {
-	children?: ReactNode,
-}
-
-export const MainWrapper = ({children}: MainWrapperProps) => {
+export const MainWrapper: FC<PropsWithChildren> = ({children}) => {
 	return <StyledMainWrapper>{children}</StyledMainWrapper>
 }

@@ -4,19 +4,19 @@ import {CancelSearch, DummySearch, SearchInput, StyledSearch} from './style';
 import searchIcon from '../../images/search-icon.svg'
 
 export const Search = () => {
-	const [isDummySearch, toggleDummySearch] = useState(true);
+	const [isActive, setIsActive] = useState(true);
 
 	const toggleSearch = () => {
-		toggleDummySearch(!isDummySearch);
+		setIsActive(!isActive);
 	}
 
 	return (
 		<>
-			{isDummySearch ?
+			{isActive ?
 				<DummySearch /> :
 				<StyledSearch>
 					<SearchInput placeholder="Search..." />
-					<CancelSearch><span>&#215;</span></CancelSearch>
+					<CancelSearch aria-label='Cancel Search'><span>&#215;</span></CancelSearch>
 				</StyledSearch>}
 			<HeaderButton aria-label="Toggle Search Input"><img src={searchIcon} alt='Search Icon' onClick={toggleSearch} /></HeaderButton>
 		</>
