@@ -2,27 +2,38 @@ import React from 'react';
 import './App.css';
 import {ThemeState} from './context/themeState';
 import {Layout} from './containers/layout';
-import {Post} from './components/post';
-import image from './images/Rectangle 39.png';
+import {WidthContainer} from './containers/widthContainer/style';
+import { MainArea} from './pages/mainPage';
+import {Route, Routes} from 'react-router-dom';
+import {MainWrapper} from './containers/mainWrapper';
+import {NotFoundPage} from './pages/notFoundPage';
+import {BlogPage} from './pages/blogPage';
+import {PopularPage} from './pages/popularPage';
+import {FavoritesPage} from './pages/favouritesPage';
+import { StyledMainArea } from './pages/mainPage/style';
 
 function App() {
-	const post = {
-		'id': 0,
-		'image': image,
-		'text': 'Astronauts Kayla Barron and Raja Chari floated out of the International Space Station airlock for a spacewalk Tuesday, installing brackets and struts to support new solar arrays to upgrade the research lab’s power system on the same day that crewmate Mark Vande Hei marked his 341st day in orbit, a U.S. record for a single spaceflight.',
-		'date': '2022-10-22',
-		'lesson_num': 50,
-		'title': 'Astronauts prep for new solar arrays on nearly seven-hour spacewalk',
-		'author': 0
-	}
 
 	return (
-		<ThemeState>
-			<Layout>
-				<div style={{'height': '70px'}}></div>
-				<Post id={post.id} image={post.image} text={post.text} date={post.date} lesson_num={post.lesson_num} title={post.title} author={post.author} />
-			</Layout>
-		</ThemeState>
+		<>
+			{/*<Global />*/}
+			<ThemeState>
+				<Layout>
+					<MainWrapper>
+						<WidthContainer>
+							<MainArea>
+								<Routes>
+									<Route index element={<BlogPage />} />
+									<Route path='favourites' element={<PopularPage />} />
+									<Route path='popular' element={<FavoritesPage />} />
+									<Route path='*' element={<NotFoundPage />} />
+								</Routes>
+							</MainArea>
+						</WidthContainer>
+					</MainWrapper>
+				</Layout>
+			</ThemeState>
+		</>
 	);
 }
 

@@ -25,7 +25,7 @@ export const MainMenuButton = styled.button`
 	width: 100%;
 	font-weight: 600;
 	font-size: 1rem;
-	line-height: 1.5rem;
+	line-height: 1.5em;
 	background-color: ${(props) => props.theme.menu};
 	color: ${(props) => props.theme.textSecondary};
 	border-top: ${(props) => props.theme.secondary} 1px solid;

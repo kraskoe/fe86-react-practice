@@ -1,9 +1,10 @@
 import {
 	ActionButton,
 	ActionPanelFiller,
-	DatePosted,
-	PostActionsWrapper,
-	PostImage, PostPopularity,
+	DatePosted, PopularPostTitle,
+	PostActionsWrapper, PostContainer,
+	PostData,
+	PostImage, PostPopularity, PostText,
 	PostTitle,
 	PostWrapper
 } from './style';
@@ -11,25 +12,34 @@ import {ReactComponent as ThumbsUpIcon} from '../../images/thumbs_up-icon.svg';
 import {ReactComponent as ThumbsDownIcon} from '../../images/thumbs_down-icon.svg';
 import {ReactComponent as BookmarkIcon} from '../../images/bookmark-icon.svg';
 import {ReactComponent as MoreIcon} from '../../images/more-icon.svg';
-import image from '../../images/Rectangle 39.png';
 
-type PostProps = {
-	'id': number | string,
-	'image': string,
-	'text': string,
-	'date': string,
-	'lesson_num': number,
-	'title': string,
-	'author': string | number,
+export type PostProps = {
+	id: string,
+	image: string,
+	text: string,
+	date: string,
+	lesson_num: number,
+	title: string,
+	author: string | number,
 }
 
-export const Post = ({id, image, date, title, author, text, lesson_num}: PostProps)=> {
+type PostPropsExtended = PostProps & {
+	mostPopular?: boolean,
+	aside?: boolean,
+}
+
+export const Post = ({id, image, date, title, author, text, lesson_num, mostPopular, aside}: PostPropsExtended)=> {
 
 	return (
-		<PostWrapper>
-			<PostImage src={image} alt='' />
-			<DatePosted>{date}</DatePosted>
-			<PostTitle>{title}</PostTitle>
+		<PostWrapper id={id}>
+			<PostContainer mostPopular={mostPopular} aside={aside}>
+				<PostImage src={image} alt='' mostPopular={mostPopular} aside={aside}/>
+				<PostData mostPopular={mostPopular} aside={aside}>
+					<DatePosted>{date}</DatePosted>
+					{mostPopular ? <PopularPostTitle>{title}</PopularPostTitle> : <PostTitle>{title}</PostTitle>}
+					{mostPopular && <PostText>{text.slice(0, 300)}</PostText>}
+				</PostData>
+			</PostContainer>
 			<PostActionsWrapper>
 				<ActionButton><ThumbsUpIcon /></ActionButton>
 				<PostPopularity>{lesson_num}</PostPopularity>

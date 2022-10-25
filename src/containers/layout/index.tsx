@@ -1,4 +1,4 @@
-import {MainWrapper} from '../../components/mainWrapper';
+import {AppWrapper} from '../appWrapper';
 import {Header} from '../../components/header';
 import React, {FC, PropsWithChildren} from 'react';
 import {Footer} from '../../components/footer';
@@ -6,13 +6,13 @@ import AuthorizationState from '../../context/authState';
 
 export const Layout: FC<PropsWithChildren> = ({children}) => {
 	return (
-		<MainWrapper>
+		<AppWrapper>
 			<AuthorizationState>
 				<Header />
 				{children}
 			</AuthorizationState>
 			<Footer />
-		</MainWrapper>
+		</AppWrapper>
 )
 }
 

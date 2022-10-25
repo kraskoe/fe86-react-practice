@@ -4,11 +4,13 @@ import { StyledFooter } from './style';
 
 export const Footer = () => {
 	return (
-		<WidthContainer>
-			<StyledFooter>
-				<p>©2022 Blogfolio</p>
-				<p>All rights reserved</p>
-			</StyledFooter>
-		</WidthContainer>
+		<StyledFooter>
+			<WidthContainer>
+				<div>
+					<p>©2022 Blogfolio</p>
+					<p>All rights reserved</p>
+				</div>
+			</WidthContainer>
+		</StyledFooter>
 	)
 }

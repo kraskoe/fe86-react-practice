@@ -21,7 +21,7 @@ export const MainMenu = () => {
 					<Border />
 					{user && <UserCredentials />}
 					<MainMenuButton>Home</MainMenuButton>
-					<MainMenuButton>Add Post</MainMenuButton>
+					{user && <MainMenuButton>Add Post</MainMenuButton>}
 					<MainMenuFiller />
 					<ThemeButtonWrapper>
 						<ThemeButton

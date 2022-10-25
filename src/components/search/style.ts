@@ -21,16 +21,21 @@ export const CancelSearch = styled.button`
   cursor: pointer;
 	background-color: transparent;
 	height: 100%;
+	display: flex;
+  justify-content: center;
+	align-items: center;
+	
 	span {
     color: ${(props) =>  props.theme.textPrimary};
-    font-size: 3em;
-		line-height: 1em;
+    font-size: 3rem;
+		line-height: 1rem;
   }
 `
 
 export const StyledSearch = styled.form`
 	display: flex;
 	justify-content: end;
+	align-items: center;
 	padding: 0;
 	margin: 0;
   flex: 1 0 auto;
