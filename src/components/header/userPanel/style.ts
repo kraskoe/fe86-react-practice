@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Theme} from '../../styles/theme';
+import {Theme} from '../../../styles/theme';
 
 export type UsernameProps = {
 	theme: Theme,
@@ -16,7 +16,7 @@ export const UserInitials = styled(UserName)`
 	border-radius: 5px;
 `
 
-export const UserWrapper = styled.div`
+export const UserPanel = styled.div`
   display: flex;
   justify-content: center;
 	align-items: center;

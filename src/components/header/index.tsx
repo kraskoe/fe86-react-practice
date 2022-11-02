@@ -1,27 +1,26 @@
 import {HeaderWrapper} from './style';
-import BurgerState from '../../context/burgerState';
-import Burger from '../burger';
-import {Search} from '../search';
-import {UserCredentials} from '../username';
-import React, {useContext} from 'react';
+import Burger from './burger';
+import {Search} from './search';
+import {UserCredentials} from './userPanel';
+import React from 'react';
 import userIcon from '../../images/user-icon.svg';
-import {HeaderButton} from '../button';
-import {AuthContext} from '../../context/authState';
-import { isBrowser, isTablet } from 'react-device-detect';
+import {HeaderButton} from './headerButton';
+import {useAppSelector} from '../../store/hooks';
+import { TabletOrDesktop } from '../../utils/detectScreenSize';
 
 export const Header = () => {
-  const { user } = useContext(AuthContext);
+  const user = useAppSelector((state) => state.auth.user);
 
   return (
    <HeaderWrapper>
-     <BurgerState>
-       <Burger />
-     </BurgerState>
+     <Burger />
      <Search />
-     {(isBrowser || isTablet) && (user ?
-       <UserCredentials /> :
-       <HeaderButton aria-label="Log In Button"><img src={userIcon} alt='Default User Icon' /></HeaderButton>)
-     }
+     <TabletOrDesktop>
+       {user ?
+         <UserCredentials /> :
+         <HeaderButton aria-label="Log In Button"><img src={userIcon} alt='Default User Icon' /></HeaderButton>
+       }
+     </TabletOrDesktop>
    </HeaderWrapper>
  )
 }

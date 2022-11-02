@@ -13,6 +13,7 @@ export const TabsWrapper = styled.div`
     margin-bottom: ${64 / 16}rem;
   }
 `
+TabsWrapper.displayName = 'TabsWrapper';
 
 export const Tab = styled.div`
   color: ${(props) => props.theme.textSecondary};
@@ -35,3 +36,4 @@ export const Tab = styled.div`
     padding: 0 2.5rem 1.5rem;
   }
 `
+Tab.displayName = 'Tab';

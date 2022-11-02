@@ -1,4 +1,4 @@
-import {PostProps} from '../components/post';
+import {PostProps} from '../store/postsSlice';
 
 // useEffect(() => {fetch('https://studapi.teachmeskills.by/blog/posts/')
 // 	.then(data => {
@@ -45,7 +45,7 @@ const populatePost = (function() {
 	let id = 0;
 
 	return function(): PostProps {return {
-		id: (id++).toString(),
+		id: (id++),
 		image: `https://picsum.photos/id/${id+50}/246/352`,
 		text: textFiller.slice(0, Math.floor(Math.random()*400)+100),
 		date: getRandomDate(),

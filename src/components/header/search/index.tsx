@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import { HeaderButton } from '../button';
+import { HeaderButton } from '../headerButton';
 import {CancelSearch, DummySearch, SearchInput, StyledSearch} from './style';
-import searchIcon from '../../images/search-icon.svg'
+import searchIcon from '../../../images/search-icon.svg'
 
 export const Search = () => {
 	const [isActive, setIsActive] = useState(true);

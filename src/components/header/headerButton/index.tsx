@@ -20,7 +20,7 @@ export const HeaderButton: FC<PropsWithChildren> = ({children}) => {
 // 	theme: Theme
 // };
 //
-// export const Button = styled.button`
+// export const Button = styled.headerButton`
 // 	font-size: 1.5em;
 // 	font-weight: 700;
 // 	cursor: ${(props: ButtonProps) => props.disabled ? 'arrow' : 'pointer'};

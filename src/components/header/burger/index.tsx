@@ -1,13 +1,15 @@
-import styled from 'styled-components';
-import React, {useContext} from 'react';
-import {BurgerContext} from '../../context/burgerState';
+import React from 'react';
 import {Bar, BurgerButton } from './style';
 import {MainMenu} from '../mainMenu';
+import {toggleMenuOpen} from '../../../store/burgerSlice';
+import {useAppDispatch, useAppSelector} from '../../../store/hooks';
 
 const Burger = () => {
-	const { isMenuOpen, toggleMenuMode } = useContext(BurgerContext);
+	const isMenuOpen = useAppSelector((state) => state.burger.isMenuOpen);
+	const dispatch = useAppDispatch();
+
 	const clickHandler = () => {
-		toggleMenuMode();
+		dispatch(toggleMenuOpen());
 	};
 
 	return (
