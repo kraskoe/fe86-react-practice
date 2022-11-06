@@ -1,10 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-// type User = {
-// 	username: string,
-// 	id: number,
-// 	email: string,
-// }
+interface User {
+	username: string,
+	id: number,
+	email: string,
+}
 
 const authSlice = createSlice({
 	name: 'auth',

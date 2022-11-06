@@ -6,7 +6,7 @@ import {Tabs} from '../../components/main/tabs';
 import {fetchPosts} from '../../store/postsSlice';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {Spinner} from '../../components/main/spinner';
-import {fetchPopularPosts} from '../../store/popularPostsSlice';
+import {fetchAllPosts} from '../../store/allPostsSlice';
 import { Desktop } from '../../utils/detectScreenSize';
 import {Pagination} from '../../components/main/pagination';
 import {useParams} from 'react-router-dom';
@@ -15,21 +15,33 @@ import {useParams} from 'react-router-dom';
 export const BlogPage = () => {
 	const dispatch = useAppDispatch();
 	const postsData = useAppSelector(state => state.posts);
-	const popularPostsData = useAppSelector(state => state.popularPosts);
+	const allPostsData = useAppSelector(state => state.allPosts);
 	const {page} = useParams();
 
+	const postsQuery = {
+		page: page || '1',
+		ordering: 'date',
+		limit: '10',
+		offset: true,
+	}
+
 	useEffect(() => {
-		dispatch(fetchPosts(page ? Number(page) : 1))
+		dispatch(fetchPosts(postsQuery))
 	}, [page]);
-	const posts = postsData.posts?.results;
 
 	useEffect(() => {
-		dispatch(fetchPopularPosts())
-	}, [dispatch]);
+		dispatch(fetchAllPosts('lesson_num'))
+	}, []);
 
-	const popArray = popularPostsData && (popularPostsData.popularPosts ? popularPostsData.popularPosts.slice(0, 6) : []);
+	const posts = postsData.posts?.results || [];
+	const sortedPosts = [...posts].reverse();
+
+	const popularPosts = allPostsData.allPosts?.results || [];
+	const sortedPopularPosts = [...popularPosts].reverse();
+
+	const popArray = sortedPopularPosts.slice(0, 6);
 	const popPost =  popArray && popArray[0];
-	const maxPost = popularPostsData?.popularPosts?.length;
+	const maxPost = popularPosts.length;
 	const maxPage = Math.ceil(maxPost && maxPost / 10 || 20);
 
 	return (
@@ -42,7 +54,7 @@ export const BlogPage = () => {
 					<BlogArea>
 						<div>
 							{page === '1' && <Desktop>
-								{popularPostsData.status === 'succeeded' ?
+								{allPostsData.status === 'succeeded' ?
 									<PopularPostWrapper>
 										<Post
 											mostPopular
@@ -53,14 +65,14 @@ export const BlogPage = () => {
 								}
 							</Desktop>}
 							<PostsWrapper>
-								{posts?.map((post) => <Post
+								{sortedPosts?.map((post) => <Post
 									key={post.id}
 									{... post}
 								/>)}
 							</PostsWrapper>
 						</div>
 						<Desktop>
-							{popularPostsData.status === 'succeeded' ?
+							{allPostsData.status === 'succeeded' ?
 								<SidePostsWrapper>
 									{popArray?.slice(1).map((post) => <Post
 										aside

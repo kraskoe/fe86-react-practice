@@ -15,13 +15,7 @@ export const FavoritesPage = () => {
 			<PostsWrapper>
 				{posts.map((post) => <Post
 					key={post.id}
-					id={post.id}
-					image={post.image}
-					text={post.text}
-					date={post.date}
-					lesson_num={post.lesson_num}
-					title={post.title}
-					author={post.author} />)}
+					{...post} />)}
 			</PostsWrapper>
 		</>
 	)

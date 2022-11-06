@@ -18,6 +18,7 @@ import {PostProps} from '../../../store/postsSlice';
 type PostPropsExtended = PostProps & {
 	mostPopular?: boolean,
 	aside?: boolean,
+	search?: boolean,
 }
 
 function getLocalizedDate(date: string): string {
@@ -28,20 +29,20 @@ function getLocalizedDate(date: string): string {
 	})
 }
 
-export const Post = ({id, image, date, title, author, text, lesson_num, mostPopular, aside}: PostPropsExtended)=> {
+export const Post = ({id, image, date, title, author, text, lesson_num, mostPopular, aside, search}: PostPropsExtended)=> {
 
 	return (
-		<PostWrapper id={id.toString()}>
-			<PostContainer mostPopular={mostPopular} aside={aside}>
-				<PostImage src={image} alt='' mostPopular={mostPopular} aside={aside}/>
-				<PostData mostPopular={mostPopular} aside={aside}>
-					<DatePosted>{getLocalizedDate(date)}</DatePosted>
-					<Link to={`/post/${id}`}>
-						{mostPopular ? <PopularPostTitle>{title}</PopularPostTitle> : <PostTitle>{title}</PostTitle>}
-					</Link>
-					{mostPopular && <PostText>{text.slice(0, 300)}</PostText>}
-				</PostData>
-			</PostContainer>
+		<PostWrapper search={search} id={id.toString()}>
+			<Link to={`/post/${id}`}>
+				<PostContainer mostPopular={mostPopular} aside={aside} search={search}>
+					<PostImage src={image} alt='' mostPopular={mostPopular} aside={aside} search={search}/>
+					<PostData mostPopular={mostPopular} aside={aside} search={search}>
+						<DatePosted>{getLocalizedDate(date)}</DatePosted>
+							{mostPopular ? <PopularPostTitle>{title}</PopularPostTitle> : <PostTitle>{title}</PostTitle>}
+						{mostPopular && <PostText>{text.slice(0, 300)}</PostText>}
+					</PostData>
+				</PostContainer>
+			</Link>
 			<PostActionsWrapper>
 				<ActionButton><ThumbsUpIcon /></ActionButton>
 				<PostPopularity>{lesson_num}</PostPopularity>

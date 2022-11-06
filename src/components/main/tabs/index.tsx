@@ -8,7 +8,7 @@ export const Tabs = () => {
 
 	return (
 		<TabsWrapper>
-			<TabLink to='/posts/1'>All</TabLink>
+			<TabLink to='/posts'>All</TabLink>
 			{user && <TabLink to='/favourites'>My Favourites</TabLink>}
 			<TabLink to='/popular'>Popular</TabLink>
 		</TabsWrapper>

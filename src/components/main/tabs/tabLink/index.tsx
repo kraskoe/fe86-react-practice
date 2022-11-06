@@ -8,7 +8,10 @@ interface TabLinkProps {
 }
 
 export const TabLink = ({children, to, ...props}: TabLinkProps) => {
-	const match = useMatch(to);
+	const match = useMatch({
+		path: to,
+		end: to.length === 1,
+	});
 
 	return (
 		<Link

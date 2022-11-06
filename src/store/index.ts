@@ -3,7 +3,7 @@ import authReducer from './authSlice'
 import burgerReducer from './burgerSlice';
 import postsReducer from './postsSlice';
 import postReducer from './postSlice';
-import popularPostsReducer from './popularPostsSlice';
+import allPostsReducer from './allPostsSlice';
 
 const store = configureStore({
 	reducer: {
@@ -11,7 +11,7 @@ const store = configureStore({
 		burger: burgerReducer,
 		posts: postsReducer,
 		post: postReducer,
-		popularPosts: popularPostsReducer,
+		allPosts: allPostsReducer,
 	}
 });
 
