@@ -6,8 +6,10 @@ export const UserCredentials = () => {
 
 	return (
 		<UserPanel>
-			<UserInitials>{user && user.username.split(' ').map(item => item[0])}</UserInitials>
-			<UserName>{user && user.username}</UserName>
+			{user && <>
+				<UserInitials>{user.username.split(' ').map(item => item[0])}</UserInitials>
+				<UserName>{user.username}</UserName>
+			</>}
 		</UserPanel>
 	)
 }

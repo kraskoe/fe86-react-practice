@@ -2,7 +2,12 @@ import {useParams} from 'react-router-dom';
 import React from 'react';
 import {PaginationLink} from '../paginationLink';
 
-export const PaginationLinkPanel = ({maxPage}: {maxPage: number}) => {
+interface PaginationLinkPanelProps {
+	maxPage: number,
+	subPath: string,
+}
+
+export const PaginationLinkPanel = ({maxPage, subPath}: PaginationLinkPanelProps) => {
 	const {page} = useParams() || '1';
 	let array = Array(maxPage).fill(undefined, 0);
 	array = array.map((item, index) => {
@@ -21,7 +26,7 @@ export const PaginationLinkPanel = ({maxPage}: {maxPage: number}) => {
 				if (page) {
 					isEllipsis = true;
 					return <PaginationLink key={page}
-					                       to={`/posts/${page}`}>
+					                       to={`/${subPath}/${page}`}>
 						<span>{page}</span>
 					</PaginationLink>
 				} else if (isEllipsis) {

@@ -1,5 +1,5 @@
 import {MainMenuFiller, MainMenuWrapper, ThemeButtonWrapper} from './style';
-import {UserCredentials} from '../userPanel';
+import {UserCredentials} from '../userCredentials';
 import { Border } from '../burger/style';
 import React, {useContext, useEffect} from 'react';
 import {MainMenuButton, MainMenuLogButton, ThemeButton} from '../headerButton/style';
@@ -9,6 +9,7 @@ import { MainThemeContext } from '../../../context/themeState';
 import {Link} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks';
 import {toggleMenuOpen} from '../../../store/burgerSlice';
+import {RequireAuth} from '../../../containers/requireAuth';
 
 export const MainMenu = () => {
 	const user = useAppSelector((state) => state.auth.user);
@@ -33,9 +34,13 @@ export const MainMenu = () => {
 	return (
 		<MainMenuWrapper>
 			<Border />
-			{user && <UserCredentials />}
+			{user && <RequireAuth>
+				<UserCredentials />
+			</RequireAuth>}
 			<Link to='/'><MainMenuButton>Home</MainMenuButton></Link>
-			{user && <MainMenuButton>Add Post</MainMenuButton>}
+			{user && <RequireAuth>
+				<MainMenuButton>Add Post</MainMenuButton>
+			</RequireAuth>}
 			<MainMenuFiller />
 			<ThemeButtonWrapper>
 				<ThemeButton

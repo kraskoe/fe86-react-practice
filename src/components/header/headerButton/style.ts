@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledHeaderButton = styled.button`
+export const HeaderButton = styled.button`
   background-color: ${(props) =>  props.theme.primary};
   color: ${(props) =>  props.theme.textPrimary};
 	padding: 1rem 1.7rem;

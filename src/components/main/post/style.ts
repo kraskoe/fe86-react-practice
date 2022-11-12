@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 
-export const PostWrapper = styled.div`
+export const PostWrapper = styled.div<PostProps>`
 	border-bottom: ${(props) => props.theme.outline} 1px solid;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	${(props) => props.search && 'margin-bottom: 2rem'};
+	
+	@media(min-width: ${768/16}rem) {
+    ${(props) => props.search && 'margin-bottom: 2.5rem'};
+	}
 `
 
 PostWrapper.displayName = 'PostWrapper';
@@ -12,26 +17,27 @@ PostWrapper.displayName = 'PostWrapper';
 type PostProps = {
 	aside?: boolean,
 	mostPopular?: boolean,
+	search?: boolean,
 }
 
 export const PostContainer = styled.div<PostProps>`
 	display: flex;
-	flex-direction: ${(props) => props.aside || props.mostPopular ? 'row' : 'column'};
+	flex-direction: ${(props) => props.search || props.aside || props.mostPopular ? 'row' : 'column'};
 	gap: 2rem;
 `
 PostContainer.displayName = 'PostContainer';
 
 export const PostData = styled.div<PostProps>`
-  ${(props) => props.mostPopular ? 'flex: 1 0 67%' : props.aside && 'flex: 1 0 68%'};
+  ${(props) => props.mostPopular ? 'flex: 1 0 67%' : props.aside ? 'flex: 1 0 68%' : props.search && 'flex: 1 0 68%'};
 `
 PostData.displayName = 'PostData';
 
 export const PostImage = styled.img<PostProps>`
 	margin-bottom: 1.5rem;
-	height: ${(props) => props.aside ? 96/16 : 246/16}rem;
+	height: ${(props) => props.aside || props.search ? 96/16 : 246/16}rem;
 	width: 100%;
 	object-fit: cover;
-	${(props) => (props.mostPopular ||props.aside) && 'flex: 0 1 30%'};
+	${(props) => (props.mostPopular || props.aside || props.search) && 'flex: 0 1 30%'};
 	order: ${(props) => props.aside || props.mostPopular ? 1 : 0};
 	overflow: hidden;
 `

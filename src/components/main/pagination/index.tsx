@@ -1,18 +1,25 @@
 import { PaginationWrapper } from './style'
 import {PaginationLink} from './paginationLink';
-import {useParams} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import { TabletOrDesktop } from '../../../utils/detectScreenSize';
 import {ReactComponent as ArrowLeftIcon} from '../../../images/arrow-left-icon.svg';
 import {ReactComponent as ArrowRightIcon} from '../../../images/arrow-right-icon.svg';
 import { ActionPanelFiller } from '../post/style';
 import {PaginationLinkPanel} from './paginationLinkPanel';
 
-export const Pagination = ({maxPage}: {maxPage: number}) => {
+interface PaginationProps {
+	maxPage: number,
+}
+
+export const Pagination = ({maxPage}: PaginationProps) => {
 	const {page} = useParams();
+	const location = useLocation();
+	const path = location.pathname;
+	const subPath = path.split('/')[1];
 
 	return (
 		<PaginationWrapper>
-			<PaginationLink to={`/posts/${page && Number(page) - 1}`}
+			<PaginationLink to={`/${subPath}/${page && Number(page) - 1}`}
 			                style={Number(page) < 2 ? {pointerEvents:'none', cursor: 'default'} : {}} >
 				<ArrowLeftIcon className={Number(page) < 2 ? 'disabled' : ''} />
 				<TabletOrDesktop>
@@ -20,9 +27,9 @@ export const Pagination = ({maxPage}: {maxPage: number}) => {
 				</TabletOrDesktop>
 			</PaginationLink>
 			<ActionPanelFiller />
-			<PaginationLinkPanel maxPage={maxPage} />
+			<PaginationLinkPanel maxPage={maxPage} subPath={subPath} />
 			<ActionPanelFiller />
-			<PaginationLink to={`/posts/${page && Number(page) + 1}`}
+			<PaginationLink to={`/${subPath}/${page && Number(page) + 1}`}
 			                style={Number(page) > maxPage - 1 ? {pointerEvents:'none', cursor: 'default'} : {}} >
 				<TabletOrDesktop>
 					<span className={Number(page) > maxPage - 1 ? 'disabled' : ''} >Next</span>
