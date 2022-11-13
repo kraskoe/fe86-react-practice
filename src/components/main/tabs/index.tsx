@@ -1,6 +1,6 @@
 import { TabsWrapper} from './style';
 import React from 'react';
-import { useAppSelector} from '../../../store/hooks';
+import { useAppSelector} from '../../../store/hooks/hooks';
 import {TabLink} from './tabLink';
 
 export const Tabs = () => {

@@ -6,6 +6,7 @@ export const FullscreenPostTitle = styled.h1`
 	line-height: 1.5em;
 	color: ${(props) => props.theme.textSecondary};
 	margin-bottom: ${36/16}rem;
+	word-wrap: break-word;
 	
 	@media (min-width: ${768/16}) {
     font-size: ${56/16}rem;

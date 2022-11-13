@@ -6,16 +6,22 @@ interface User {
 	email: string,
 }
 
+interface UserState {
+	user: User | null,
+}
+
+const userInitState: UserState = {
+	user: null,
+		// user: {
+		// 	username: 'Artem Malkin',
+		// 	id: 0,
+		// 	email: 'a.malkin@gmail.com',
+		// },
+}
+
 const authSlice = createSlice({
 	name: 'auth',
-	initialState: {
-		// user: null,
-		user: {
-			username: 'Artem Malkin',
-			id: 0,
-			email: 'a.malkin@gmail.com',
-		},
-	},
+	initialState: userInitState,
 	reducers: {
 		authUser(state, action) {
 			state.user = action.payload.user;

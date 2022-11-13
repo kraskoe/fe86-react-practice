@@ -19,6 +19,7 @@ import {Provider} from 'react-redux';
 import {SearchPage} from './pages/searchPage';
 import {LoginPage} from './pages/loginPage';
 import {RequireAuth} from './containers/requireAuth';
+import { SignUpPage } from './pages/signUpPage';
 
 const router = createBrowserRouter(createRoutesFromElements(
 	<Route path='/' element={<Layout />}>
@@ -35,6 +36,7 @@ const router = createBrowserRouter(createRoutesFromElements(
 		<Route path='popular/:page' element={<PopularPage />} />
 		<Route path='search/:page' element={<SearchPage />} />
 		<Route path='login' element={<LoginPage />} />
+		<Route path='signup' element={<SignUpPage />} />
 		<Route path='*' element={<NotFoundPage />} />
 	</Route>
 ))

@@ -1,26 +1,42 @@
 import {FullscreenPost} from '../../components/main/fullscreenPost';
-import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {useAppDispatch, useAppSelector} from '../../store/hooks/hooks';
 import {useParams} from 'react-router-dom';
 import React, {useEffect} from 'react';
-import {fetchPost} from '../../store/postSlice';
+import {fetchPost} from '../../store/posts/postSlice';
 import {Spinner} from '../../components/main/spinner';
+import {fetchAllPosts} from '../../store/posts/allPostsSlice';
+import {PostNavigation} from '../../components/main/postNavigation';
+import { BreadCrumbs } from '../../components/main/breadCrumbs';
 
 
 export const SinglePage = () => {
 	const dispatch = useAppDispatch();
-	const post = useAppSelector(state => state.post.post);
-	const {status, error} = useAppSelector(state => state.post);
+	const postData = useAppSelector(state => state.post);
+	const allPosts = useAppSelector(state => state.allPosts);
+	const post = postData.post;
 	const {id} = useParams();
+	const postsArray = allPosts?.allPosts?.results;
 
 	useEffect(() => {
 		id && dispatch(fetchPost(id))
-	}, [dispatch]);
+	}, [id]);
+
+	useEffect(() => {
+		dispatch(fetchAllPosts('date'))
+	}, []);
 
 	return(
 		<>
-			{error && <h2>An error occurred: {error}</h2>}
-			{status === 'succeeded' ?
-				post && <FullscreenPost {...post}/> :
+			{postData.error && <h2>An error occurred: {postData.error}</h2>}
+			{postData.status === 'succeeded' ?
+				post && <>
+					<BreadCrumbs />
+					<FullscreenPost {...post}/>
+					{allPosts.status === 'succeeded' ?
+						postsArray && <PostNavigation allPosts={postsArray} /> :
+						<Spinner />
+					}
+				</> :
 				<Spinner/>
 			}
 		</>

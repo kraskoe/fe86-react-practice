@@ -3,13 +3,14 @@ import {Post} from '../../components/main/post';
 import React, {useEffect} from 'react';
 import {PageTitle} from '../mainPage/style';
 import {Tabs} from '../../components/main/tabs';
-import {fetchPosts} from '../../store/postsSlice';
-import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {fetchPosts} from '../../store/posts/postsSlice';
+import {useAppDispatch, useAppSelector} from '../../store/hooks/hooks';
 import {Spinner} from '../../components/main/spinner';
-import {fetchAllPosts} from '../../store/allPostsSlice';
+import {fetchAllPosts} from '../../store/posts/allPostsSlice';
 import { Desktop } from '../../utils/detectScreenSize';
 import {Pagination} from '../../components/main/pagination';
 import {useParams} from 'react-router-dom';
+import {BreadCrumbs} from '../../components/main/breadCrumbs';
 
 
 export const BlogPage = () => {
@@ -49,6 +50,7 @@ export const BlogPage = () => {
 			{postsData.error && <h2>An error occurred: {postsData.error}</h2>}
 			{postsData.status === 'succeeded' ?
 				<>
+					<BreadCrumbs />
 					<PageTitle>Blog</PageTitle>
 					<Tabs />
 					<BlogArea>

@@ -1,8 +1,8 @@
 import React from 'react';
 import {Bar, BurgerButton } from './style';
 import {MainMenu} from '../mainMenu';
-import {toggleMenuOpen} from '../../../store/burgerSlice';
-import {useAppDispatch, useAppSelector} from '../../../store/hooks';
+import {toggleMenuOpen} from '../../../store/burger/burgerSlice';
+import {useAppDispatch, useAppSelector} from '../../../store/hooks/hooks';
 
 const Burger = () => {
 	const isMenuOpen = useAppSelector((state) => state.burger.isMenuOpen);

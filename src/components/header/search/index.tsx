@@ -3,10 +3,13 @@ import {SearchCancel, DummySearch, SearchInput, SearchForm} from './style';
 import searchIcon from '../../../images/search-icon.svg'
 import {HeaderButton} from '../headerButton/style';
 import { useLocation, useNavigate} from 'react-router-dom';
+import {useAppDispatch} from '../../../store/hooks/hooks';
+import {setSearch} from '../../../store/search/searchSlice';
 
 export const Search = () => {
 	const [isActive, setIsActive] = useState(false);
 	const [inputValue, setInputValue] = useState('');
+	const dispatch = useAppDispatch();
 	const location = useLocation();
 	const navigate = useNavigate();
 	const paths = ['favourites', 'popular', 'posts', 'search'];
@@ -32,10 +35,13 @@ export const Search = () => {
 		query = form.search.value.trim();
 		if (query) {
 			if (location.pathname.includes('search')) {
-				navigate(`/search/1?search=${query}`);
+				dispatch(setSearch({search: query}));
+				navigate('/search/1');
 			} else {
-				locRef.current = location.pathname
-			} navigate(`/search/1?search=${query}`);
+				locRef.current = location.pathname;
+				dispatch(setSearch({search: query}));
+				navigate('/search/1');
+			}
 		}
 	}
 
@@ -63,10 +69,13 @@ export const Search = () => {
 			query = inputRef.current?.value.trim();
 			if (query) {
 				if (location.pathname.includes('search')) {
-					navigate(`/search/1?search=${query}`);
+					dispatch(setSearch({search: query}));
+					navigate('/search/1');
 				} else {
 					locRef.current = location.pathname
-				} navigate(`/search/1?search=${query}`);
+					dispatch(setSearch({search: query}));
+					navigate('/search/1');
+				}
 			}
 		}
 	}

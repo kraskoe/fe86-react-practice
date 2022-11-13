@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledFooter = styled.footer`
+	display: flex;
   font-size: 1rem;
   line-height: 1.5em;
 	color: ${(props) =>  props.theme.textPale};

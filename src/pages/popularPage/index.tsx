@@ -5,11 +5,12 @@ import React, {useEffect} from 'react';
 import {PageTitle} from '../mainPage/style';
 import {Tabs} from '../../components/main/tabs';
 import {Pagination} from '../../components/main/pagination';
-import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {useAppDispatch, useAppSelector} from '../../store/hooks/hooks';
 import {useParams} from 'react-router-dom';
-import {fetchPosts} from '../../store/postsSlice';
-import {fetchAllPosts} from '../../store/allPostsSlice';
+import {fetchPosts} from '../../store/posts/postsSlice';
+import {fetchAllPosts} from '../../store/posts/allPostsSlice';
 import { Spinner } from '../../components/main/spinner';
+import {BreadCrumbs} from '../../components/main/breadCrumbs';
 
 export const PopularPage = () => {
 	const postsData = useAppSelector((state) => state.posts);
@@ -40,6 +41,7 @@ export const PopularPage = () => {
 			{postsData.error && <h2>An error occurred: {postsData.error}</h2>}
 			{postsData.status === 'succeeded' ?
 				<>
+					<BreadCrumbs />
 					<PageTitle>Popular posts</PageTitle>
 					<Tabs />
 					<PostsWrapper>

@@ -22,12 +22,14 @@ export const PaginationLinkPanel = ({maxPage, subPath}: PaginationLinkPanelProps
 
 	return (
 		<>
-			{array.map((page) => {
-				if (page) {
+			{array.map((item) => {
+				if (item) {
 					isEllipsis = true;
-					return <PaginationLink key={page}
-					                       to={`/${subPath}/${page}`}>
-						<span>{page}</span>
+					return <PaginationLink key={item}
+					                       to={`/${subPath}/${item}`}
+					                       style={item === Number(page) ? {pointerEvents:'none', cursor: 'default'} : {}}
+					>
+						<span>{item}</span>
 					</PaginationLink>
 				} else if (isEllipsis) {
 					isEllipsis = !isEllipsis;

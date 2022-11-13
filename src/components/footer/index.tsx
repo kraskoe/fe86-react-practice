@@ -1,4 +1,4 @@
-import {WidthContainer} from '../../containers/widthContainer/style';
+import {WidthContainer} from '../shared/widthContainer/style';
 import { StyledFooter } from './style';
 
 

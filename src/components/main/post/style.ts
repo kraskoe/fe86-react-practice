@@ -5,6 +5,7 @@ export const PostWrapper = styled.div<PostProps>`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	width: 100%;
 	${(props) => props.search && 'margin-bottom: 2rem'};
 	
 	@media(min-width: ${768/16}rem) {
@@ -28,6 +29,7 @@ export const PostContainer = styled.div<PostProps>`
 PostContainer.displayName = 'PostContainer';
 
 export const PostData = styled.div<PostProps>`
+	flex: 1 0 auto;
   ${(props) => props.mostPopular ? 'flex: 1 0 67%' : props.aside ? 'flex: 1 0 68%' : props.search && 'flex: 1 0 68%'};
 `
 PostData.displayName = 'PostData';
