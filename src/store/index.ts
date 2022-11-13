@@ -1,9 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit';
-import authReducer from './authSlice'
-import burgerReducer from './burgerSlice';
-import postsReducer from './postsSlice';
-import postReducer from './postSlice';
-import allPostsReducer from './allPostsSlice';
+import authReducer from './auth/authSlice'
+import burgerReducer from './burger/burgerSlice';
+import postsReducer from './posts/postsSlice';
+import postReducer from './posts/postSlice';
+import allPostsReducer from './posts/allPostsSlice';
+import searchReducer from './search/searchSlice';
 
 const store = configureStore({
 	reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
 		posts: postsReducer,
 		post: postReducer,
 		allPosts: allPostsReducer,
-	}
+		search: searchReducer,
+	},
 });
 
 export type RootState = ReturnType<typeof store.getState>;

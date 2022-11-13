@@ -1,9 +1,9 @@
-import {AppWrapper} from '../appWrapper';
+import {AppWrapper} from '../../components/shared/appWrapper';
 import {Header} from '../../components/header';
 import React from 'react';
 import {Footer} from '../../components/footer';
-import {MainWrapper} from '../mainWrapper';
-import {WidthContainer} from '../widthContainer/style';
+import {MainWrapper} from '../../components/shared/mainWrapper';
+import {WidthContainer} from '../../components/shared/widthContainer/style';
 import {MainArea} from '../../pages/mainPage';
 import {Outlet} from 'react-router-dom';
 

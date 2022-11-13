@@ -41,10 +41,6 @@ const allPostsSlice = createSlice({
 			state.status = 'succeeded';
 			state.allPosts = action.payload;
 		});
-		// builder.addCase(fetchPosts.rejected, (state, action) => {
-		// 	state.status = 'failed';
-		// 	state.error = action.payload;
-		// })
 	},
 })
 

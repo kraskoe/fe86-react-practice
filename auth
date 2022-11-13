@@ -1,0 +1,29 @@
+POST
+/auth/users/
+REQUEST
+{
+  "username": "EvgenYo",
+  "email": "evgen_2005_yo@mail.ru",
+  "password": "EvgenYoPassword"
+}
+RESPONSE
+{
+  "username": "EvgenYo",
+  "email": "evgen_2005_yo@mail.ru",
+  "id": 5439
+}
+http://studapi.teachmeskills.by//activate/NTQzOQ/beqgns-b32293183ebbd4c3520d89c07f1b9f0b
+
+{
+  "username": "tmsfe86",
+  "email": "tmsfe86@mail.ru",
+  "password": "EvgenYoPassword"
+}
+{
+  "username": "tmsfe86",
+  "email": "tmsfe86@mail.ru",
+  "id": 5440
+}
+http://studapi.teachmeskills.by//activate/NTQ0MA/beqic2-2ea7c6a3e193140038b38f8a2bfbd292
+
+

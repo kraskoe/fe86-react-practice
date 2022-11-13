@@ -7,8 +7,8 @@ import lightIcon from '../../../images/light-icon.svg'
 import darkIcon from '../../../images/dark-icon.svg'
 import { MainThemeContext } from '../../../context/themeState';
 import {Link} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../../store/hooks';
-import {toggleMenuOpen} from '../../../store/burgerSlice';
+import {useAppDispatch, useAppSelector} from '../../../store/hooks/hooks';
+import {toggleMenuOpen} from '../../../store/burger/burgerSlice';
 import {RequireAuth} from '../../../containers/requireAuth';
 
 export const MainMenu = () => {

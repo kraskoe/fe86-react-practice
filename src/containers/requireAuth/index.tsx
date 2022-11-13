@@ -1,5 +1,5 @@
 import {Navigate, useLocation} from 'react-router-dom';
-import {useAppSelector} from '../../store/hooks';
+import {useAppSelector} from '../../store/hooks/hooks';
 import {ReactElement} from 'react';
 
 interface RequireAuthProps {

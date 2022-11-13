@@ -13,7 +13,7 @@ import {ReactComponent as ThumbsDownIcon} from '../../../images/thumbs_down-icon
 import {ReactComponent as BookmarkIcon} from '../../../images/bookmark-icon.svg';
 import {ReactComponent as MoreIcon} from '../../../images/more-icon.svg';
 import {Link} from 'react-router-dom';
-import {PostProps} from '../../../store/postsSlice';
+import {PostProps} from '../../../store/posts/postsSlice';
 
 type PostPropsExtended = PostProps & {
 	mostPopular?: boolean,
