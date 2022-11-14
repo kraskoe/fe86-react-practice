@@ -18,6 +18,7 @@ export const PageTitle = styled.h1`
   font-size: ${32/16}rem;
   line-height: 1.5em;
   margin-bottom: ${32/16}rem;
+  word-wrap: break-word;
 
   @media (min-width: ${768/16}rem) {
     font-size: ${56/16}rem;
@@ -25,5 +26,4 @@ export const PageTitle = styled.h1`
     margin-bottom: ${40/16}rem;
   }
 `
-
 PageTitle.displayName = 'PageTitle';

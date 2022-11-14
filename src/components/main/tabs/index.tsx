@@ -4,7 +4,7 @@ import { useAppSelector} from '../../../store/hooks/hooks';
 import {TabLink} from './tabLink';
 
 export const Tabs = () => {
-	const user = useAppSelector((state) => state.auth.user);
+	const user = useAppSelector((state) => state.auth.profileData.user);
 
 	return (
 		<TabsWrapper>

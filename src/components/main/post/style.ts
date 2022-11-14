@@ -30,7 +30,7 @@ PostContainer.displayName = 'PostContainer';
 
 export const PostData = styled.div<PostProps>`
 	flex: 1 0 auto;
-  ${(props) => props.mostPopular ? 'flex: 1 0 67%' : props.aside ? 'flex: 1 0 68%' : props.search && 'flex: 1 0 68%'};
+  ${(props) => (props.mostPopular || props.aside || props.search) && 'flex: 0 1 67%'};
 `
 PostData.displayName = 'PostData';
 
@@ -59,6 +59,8 @@ export const PostTitle = styled.h3`
 	font-size: ${18/16}rem;
 	line-height: 1.5em;
 	margin-bottom: ${28/16}rem;
+  word-wrap: break-word;
+  word-break: break-word;
 `
 PostTitle.displayName = 'PostTitle';
 
@@ -68,6 +70,8 @@ export const PopularPostTitle = styled.h2`
 	font-size: ${32/16}rem;
 	line-height: 1.5em;
 	margin-bottom: ${24/16}rem;
+  word-wrap: break-word;
+	word-break: break-word;
 `
 PopularPostTitle.displayName = 'PopularPostTitle';
 

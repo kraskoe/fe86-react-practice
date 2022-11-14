@@ -36,11 +36,11 @@ const postSlice = createSlice({
 		builder.addCase(fetchPost.pending, (state) => {
 			state.status = 'pending';
 			state.error = null;
-		}),
-			builder.addCase(fetchPost.fulfilled, (state, action) => {
-				state.status = 'succeeded';
-				state.post = action.payload;
-			})
+		});
+		builder.addCase(fetchPost.fulfilled, (state, action) => {
+			state.status = 'succeeded';
+			state.post = action.payload;
+		});
 	},
 })
 
