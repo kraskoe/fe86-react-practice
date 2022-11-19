@@ -8,21 +8,27 @@ import darkIcon from '../../../images/dark-icon.svg'
 import { MainThemeContext } from '../../../context/themeState';
 import {Link} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks/hooks';
-import {toggleMenuOpen} from '../../../store/burger/burgerSlice';
+import {toggleMenuOpen} from '../../../store/slices/burger/burgerSlice';
 import {RequireAuth} from '../../../containers/requireAuth';
+import {logOut} from '../../../store/slices/auth/authSlice';
+import {FromLink} from '../../shared/fromLink';
 
 export const MainMenu = () => {
-	const user = useAppSelector((state) => state.auth.user);
-
+	const user = useAppSelector((state) => state.auth.profileData.user);
+	const dispatch = useAppDispatch();
 	const {mainTheme, toggleTheme} = useContext(MainThemeContext);
+	const isLightTheme = mainTheme === 'light';
+
 	const clickHandler = () => {
 		toggleTheme();
 	};
-	const isLightTheme = mainTheme === 'light';
 
-	const dispatch = useAppDispatch();
 	const menuHandler = () => {
 		dispatch(toggleMenuOpen());
+	};
+
+	const handleLogOut = () => {
+		dispatch(logOut());
 	};
 
 	useEffect(() => {
@@ -56,7 +62,12 @@ export const MainMenu = () => {
 					disabled={!isLightTheme}
 				><img src={darkIcon} alt='Dark Theme' /></ThemeButton>
 			</ThemeButtonWrapper>
-			<MainMenuLogButton>{user ? 'Log Out' : 'Sign In'}</MainMenuLogButton>
+			{user ?
+				<MainMenuLogButton onClick={handleLogOut}>Log Out</MainMenuLogButton> :
+				<FromLink to={'/login'}>
+					<MainMenuLogButton>Sign In</MainMenuLogButton>
+				</FromLink>
+			}
 		</MainMenuWrapper>
 	)
 }

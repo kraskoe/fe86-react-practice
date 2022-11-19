@@ -4,7 +4,7 @@ import {ReactComponent as ArrowLeftIcon} from '../../../images/arrow-left-icon.s
 import {ReactComponent as ArrowRightIcon} from '../../../images/arrow-right-icon.svg';
 import { PaginationWrapper } from '../pagination/style';
 import {PaginationLink} from '../pagination/paginationLink';
-import {PostProps} from '../../../store/posts/postsSlice';
+import {PostProps} from '../../../store/slices/posts/postsSlice';
 import {ActionPanelFiller} from '../post/style';
 import {PostNavTitle, PostNavWrapper} from './style';
 
@@ -42,7 +42,7 @@ export const PostNavigation = ({allPosts}: PostNavigationProps) => {
 			                style={!nextPost ? {pointerEvents:'none', cursor: 'default'} : {}} >
 				<PostNavWrapper>
 					<TabletOrDesktop>
-						<span className={!nextPost ? 'disabled' : ''} >Next</span>
+						<span className={!nextPost ? 'disabled' : ''} style={{alignSelf: 'end'}} >Next</span>
 					</TabletOrDesktop>
 					<Desktop>
 						{nextPost ? <PostNavTitle className={!nextPost ? 'disabled' : ''} >{nextPostTitle}</PostNavTitle> : <></>}

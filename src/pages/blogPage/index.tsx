@@ -3,14 +3,16 @@ import {Post} from '../../components/main/post';
 import React, {useEffect} from 'react';
 import {PageTitle} from '../mainPage/style';
 import {Tabs} from '../../components/main/tabs';
-import {fetchPosts} from '../../store/posts/postsSlice';
+import {fetchPosts} from '../../store/slices/posts/postsSlice';
 import {useAppDispatch, useAppSelector} from '../../store/hooks/hooks';
 import {Spinner} from '../../components/main/spinner';
-import {fetchAllPosts} from '../../store/posts/allPostsSlice';
+import {fetchAllPosts} from '../../store/slices/posts/allPostsSlice';
 import { Desktop } from '../../utils/detectScreenSize';
 import {Pagination} from '../../components/main/pagination';
 import {useParams} from 'react-router-dom';
 import {BreadCrumbs} from '../../components/main/breadCrumbs';
+import {useLocalStorage} from '../../storage/hooks';
+import {initFavourites} from '../../storage/initValues';
 
 
 export const BlogPage = () => {

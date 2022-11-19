@@ -1,13 +1,17 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const AuthTextInput = styled.input`
+interface IInputProps {
+	error?: boolean,
+}
+
+export const AuthTextInput = styled.input<IInputProps>`
 	background-color: ${(props) => props.theme.textPrimary};
 	color: ${(props) => props.theme.textPale};
 	padding: ${18/16}rem ${20/16}rem;
 	flex: 1 0 auto;
 	outline: none;
-	border: none;
+	border: ${props => props.error ? `${props.theme.error} 2px solid` : 'transparent 2px solid'};
 	font-size: 1rem;
 	
 	&::placeholder {
@@ -100,9 +104,30 @@ export const AuthToggleWrapper = styled.div`
 `
 AuthToggleWrapper.displayName = 'AuthToggleWrapper';
 
-export const AuthError = styled.span`
+export const AuthError = styled.span<{p0?: boolean}>`
+	display: inline-block;
   color: ${(props) => props.theme.error};
-	margin-bottom: 1rem;
-	padding-left: 1rem;
+	margin-bottom: ${props => props.p0 ? '2rem' : '0'};
+	padding-left: ${props => props.p0 ? '0' : '1rem'};
+	font-weight: 600;
 `
 AuthError.displayName = 'AuthError';
+
+export const PopupWrapper = styled.div`
+	background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+`
+PopupWrapper.displayName = 'PopupWrapper';
+
+export const PopupContainer = styled.div`
+  padding: 1rem;
+  background-color: ${(props) => props.theme.mainBg};
+`
+PopupContainer.displayName = 'PopupContainer';

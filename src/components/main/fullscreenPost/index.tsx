@@ -10,7 +10,7 @@ import {ReactComponent as ThumbsUpIcon} from '../../../images/thumbs_up-icon.svg
 import {ReactComponent as ThumbsDownIcon} from '../../../images/thumbs_down-icon.svg';
 import {ReactComponent as BookmarkIcon} from '../../../images/bookmark-icon.svg';
 import React from 'react';
-import {PostProps} from '../../../store/posts/postsSlice';
+import {PostProps} from '../../../store/slices/posts/postsSlice';
 import {FlexContainer} from '../../shared/style';
 
 

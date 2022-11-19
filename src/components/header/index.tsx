@@ -8,10 +8,10 @@ import {useAppSelector} from '../../store/hooks/hooks';
 import { TabletOrDesktop } from '../../utils/detectScreenSize';
 import { HeaderButton } from './headerButton/style';
 import {RequireAuth} from '../../containers/requireAuth';
-import {Link} from 'react-router-dom';
+import {FromLink} from '../shared/fromLink';
 
 export const Header = () => {
-  const user = useAppSelector((state) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.profileData.user);
 
   return (
    <HeaderWrapper>
@@ -23,9 +23,9 @@ export const Header = () => {
            <UserCredentials />
          </RequireAuth> :
          <div>
-           <Link to={'/login'}>
+           <FromLink to={'/login'}>
              <HeaderButton aria-label="Log In Button"><img src={userIcon} alt='Default User Icon' /></HeaderButton>
-           </Link>
+           </FromLink>
          </div>
        }
      </TabletOrDesktop>

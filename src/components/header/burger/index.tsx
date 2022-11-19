@@ -1,7 +1,7 @@
 import React from 'react';
 import {Bar, BurgerButton } from './style';
 import {MainMenu} from '../mainMenu';
-import {toggleMenuOpen} from '../../../store/burger/burgerSlice';
+import {toggleMenuOpen} from '../../../store/slices/burger/burgerSlice';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks/hooks';
 
 const Burger = () => {
