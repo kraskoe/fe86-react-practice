@@ -1,13 +1,17 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const AuthTextInput = styled.input`
+interface IInputProps {
+	error?: boolean,
+}
+
+export const AuthTextInput = styled.input<IInputProps>`
 	background-color: ${(props) => props.theme.textPrimary};
 	color: ${(props) => props.theme.textPale};
 	padding: ${18/16}rem ${20/16}rem;
 	flex: 1 0 auto;
 	outline: none;
-	border: none;
+	border: ${props => props.error ? `${props.theme.error} 2px solid` : 'transparent 2px solid'};
 	font-size: 1rem;
 	
 	&::placeholder {

@@ -1,8 +1,8 @@
 import React, {FormEvent, useEffect, useRef, useState} from 'react';
-import {useAppDispatch} from '../../../store/hooks/hooks';
+import {useAppDispatch, useAppSelector} from '../../../store/hooks/hooks';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {ILoginRequest} from '../../../store/auth/types';
-import {fetchUserData, getToken} from '../../../store/auth/authSlice';
+import {ILoginRequest} from '../../../store/slices/auth/types';
+import {fetchUserData, getToken} from '../../../store/slices/auth/authSlice';
 import {AuthButton, AuthError, AuthForm, AuthLabel, AuthLink, AuthTextInput, AuthToggleWrapper} from '../shared/style';
 
 export const LoginForm = () => {
@@ -15,7 +15,6 @@ export const LoginForm = () => {
 		error: false,
 		email: '',
 		password: '',
-		serverError: ''
 	}
 	const [formState, setFormState] = useState(initialFormState);
 	const [errorState, setErrorState] = useState(initialErrorState);
@@ -24,6 +23,7 @@ export const LoginForm = () => {
 	const passwordRef = useRef<HTMLInputElement>(null);
 	const pattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,8})+$/
 	const dispatch = useAppDispatch();
+	const serverError = useAppSelector(state => state.auth.authData.error)
 	const navigate = useNavigate();
 	const location = useLocation();
 	const fromPage = location.state?.from || '/';
@@ -42,12 +42,6 @@ export const LoginForm = () => {
 		const resultAction = await dispatch(getToken(loginData))
 		if (getToken.fulfilled.match(resultAction)) {
 			handleFetchUserData(resultAction.payload.access);
-		} else {
-			if (resultAction.payload) {
-				setErrorState({...errorState , serverError: resultAction.payload.detail})
-			} else {
-				setErrorState({...errorState , serverError: resultAction.error.message || 'Login error'})
-			}
 		}
 	}
 
@@ -55,12 +49,6 @@ export const LoginForm = () => {
 		const resultAction = await dispatch(fetchUserData(accessToken))
 		if (fetchUserData.fulfilled.match(resultAction)) {
 			navigate(fromPage);
-		} else {
-			if (resultAction.payload) {
-				setErrorState({...errorState , serverError: resultAction.payload.detail || 'Server error'})
-			} else {
-				setErrorState({...errorState , serverError: resultAction.error.message || 'Server error'})
-			}
 		}
 	}
 
@@ -118,7 +106,7 @@ export const LoginForm = () => {
 				noValidate={true}
 				autoComplete={'on'}
 				onSubmit={handleSubmit}>
-				{errorState.serverError && <div><AuthError p0>{errorState.serverError}</AuthError></div>}
+				{serverError && <div><AuthError p0>{serverError}</AuthError></div>}
 				<AuthLabel>
 					<div>Email{errorState.email && <AuthError>{errorState.email}</AuthError>}</div>
 					<div style={{display: 'flex'}}>

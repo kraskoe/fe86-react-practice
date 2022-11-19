@@ -7,8 +7,8 @@ import {Tabs} from '../../components/main/tabs';
 import {Pagination} from '../../components/main/pagination';
 import {useAppDispatch, useAppSelector} from '../../store/hooks/hooks';
 import {useParams} from 'react-router-dom';
-import {fetchPosts} from '../../store/posts/postsSlice';
-import {fetchAllPosts} from '../../store/posts/allPostsSlice';
+import {fetchPosts} from '../../store/slices/posts/postsSlice';
+import {fetchAllPosts} from '../../store/slices/posts/allPostsSlice';
 import { Spinner } from '../../components/main/spinner';
 import {BreadCrumbs} from '../../components/main/breadCrumbs';
 

@@ -1,7 +1,7 @@
 import {PageTitle} from '../../../pages/mainPage/style';
 import React, {Dispatch, FormEvent, SetStateAction, useEffect, useState} from 'react';
 import {AuthButton, AuthError, AuthForm, AuthLabel, AuthTextInput, PopupContainer, PopupWrapper} from '../shared/style';
-import {confirmRegistration} from '../../../store/auth/authSlice';
+import {confirmRegistration} from '../../../store/slices/auth/authSlice';
 import {useAppDispatch} from '../../../store/hooks/hooks';
 
 interface RegistrationConfirmationPopupProps {

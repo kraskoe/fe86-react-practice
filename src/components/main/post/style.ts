@@ -122,7 +122,8 @@ export const ActionButton = styled.button<ActionButtonProps>`
   color: ${(props) => props.theme.textSecondary};
 	height: ${56/16}rem;
 
-  &:hover {
+  &:hover,
+  &.active {
 		background-color: ${(props) => props.error ? props.theme.error : props.theme.primaryBg};
   	color: ${(props) => props.theme.textPrimary};
 	}
@@ -135,12 +136,14 @@ export const ActionButton = styled.button<ActionButtonProps>`
 		fill: ${(props) => props.theme.textSecondary};
 	}
 
-  &:hover svg {
+  &:hover svg,
+  &.active svg {
     fill: ${(props) => props.theme.textPrimary};
 	}
 	
 	&:disabled {
-    background-color: ${(props) => props.theme.secondary};
+    //background-color: ${(props) => props.theme.secondary};
+		pointer-events: none;
   }
 
   &:disabled svg {

@@ -13,25 +13,25 @@ import {baseUrl, Endpoints} from './endpoints';
 interface IAuthState {
 	authData: {
 		token: ILoginResponse | null,
-		status: 'idle' | 'pending' | 'succeeded' | 'failed',
-		error: string | SerializedError | null,
+		error: string | null,
 	},
 	profileData: {
 		user: IUser| null,
-		status: 'idle' | 'pending' | 'succeeded' | 'failed',
-		error: string | SerializedError | null,
+		error: string | null,
 	},
 }
 
 const initialState: IAuthState = {
 	authData: {
-		token: null,
-		status: 'idle',
+		token: sessionStorage.getItem('token') ?
+			JSON.parse(sessionStorage.getItem('token') || '') :
+			null,
 		error: null,
 	},
 	profileData: {
-		user: null,
-		status: 'idle',
+		user: sessionStorage.getItem('user') ?
+			JSON.parse(sessionStorage.getItem('user') || '') :
+			null,
 		error: null,
 	},
 }
@@ -117,36 +117,36 @@ const authSlice = createSlice({
 	reducers: {
 		logOut(state) {
 			state.authData.token = null;
-			state.authData.status = 'idle';
 			state.authData.error = null;
 			state.profileData.user = null;
-			state.profileData.status = 'idle';
 			state.profileData.error = null;
 		}
 	},
 	extraReducers: (builder) => {
 		builder.addCase(getToken.fulfilled, (state, {payload}) => {
-			state.authData.status = 'succeeded';
+			sessionStorage.setItem('token', JSON.stringify(payload));
 			state.authData.token = payload;
+			state.authData.error = null;
 		});
 		builder.addCase(getToken.rejected, (state, action) => {
-			state.authData.status = 'failed';
+			state.authData.token = null;
 			if (action.payload) {
 				state.authData.error = action.payload.detail;
 			} else {
-				state.authData.error = action.error
+				state.authData.error = action.error.message ? action.error.message : 'Server error'
 			}
 		});
 		builder.addCase(fetchUserData.fulfilled, (state, {payload}) => {
-			state.profileData.status = 'succeeded';
+			sessionStorage.setItem('user', JSON.stringify(payload));
 			state.profileData.user = payload;
+			state.profileData.error = null;
 		});
 		builder.addCase(fetchUserData.rejected, (state, action) => {
-			state.profileData.status = 'failed';
+			state.profileData.user = null;
 			if (action.payload) {
 				state.profileData.error = action.payload.detail;
 			} else {
-				state.profileData.error = action.error
+				state.profileData.error = action.error.message ? action.error.message : 'Server error'
 			}
 		});
 	},

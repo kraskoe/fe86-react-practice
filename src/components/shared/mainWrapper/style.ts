@@ -4,7 +4,7 @@ export const StyledMainWrapper = styled.main`
 	flex: 1 0 auto;
 	display: flex;
   justify-content: center;
-	align-items: center;
+	align-items: start;
 `
 
 StyledMainWrapper.displayName = 'StyledMainWrapper';

@@ -1,10 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit';
-import authReducer from './auth/authSlice'
-import burgerReducer from './burger/burgerSlice';
-import postsReducer from './posts/postsSlice';
-import postReducer from './posts/postSlice';
-import allPostsReducer from './posts/allPostsSlice';
-import searchReducer from './search/searchSlice';
+import authReducer from './slices/auth/authSlice'
+import burgerReducer from './slices/burger/burgerSlice';
+import postsReducer from './slices/posts/postsSlice';
+import postReducer from './slices/posts/postSlice';
+import allPostsReducer from './slices/posts/allPostsSlice';
+import searchReducer from './slices/search/searchSlice';
 
 const store = configureStore({
 	reducer: {

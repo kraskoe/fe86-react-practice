@@ -4,7 +4,7 @@ import searchIcon from '../../../images/search-icon.svg'
 import {HeaderButton} from '../headerButton/style';
 import { useLocation, useNavigate} from 'react-router-dom';
 import {useAppDispatch} from '../../../store/hooks/hooks';
-import {setSearch} from '../../../store/search/searchSlice';
+import {setSearch} from '../../../store/slices/search/searchSlice';
 
 export const Search = () => {
 	const [isActive, setIsActive] = useState(false);
@@ -26,7 +26,7 @@ export const Search = () => {
 	useEffect(() => {
 		if (!location.pathname.includes('search')) {
 			setInputValue('');
-		}
+		} else setInputValue(JSON.parse(sessionStorage.getItem('search') || ''));
 	},[location]);
 
 	const handleSubmit = (e: FormEvent) => {

@@ -13,7 +13,12 @@ import {ReactComponent as ThumbsDownIcon} from '../../../images/thumbs_down-icon
 import {ReactComponent as BookmarkIcon} from '../../../images/bookmark-icon.svg';
 import {ReactComponent as MoreIcon} from '../../../images/more-icon.svg';
 import {Link} from 'react-router-dom';
-import {PostProps} from '../../../store/posts/postsSlice';
+import {PostProps} from '../../../store/slices/posts/postsSlice';
+import {useAppSelector} from '../../../store/hooks/hooks';
+import {useLocalStorage} from '../../../storage/hooks';
+import {initFavourites} from '../../../storage/initValues';
+import {useEffect, useState} from 'react';
+import {log} from 'util';
 
 type PostPropsExtended = PostProps & {
 	mostPopular?: boolean,
@@ -30,6 +35,26 @@ function getLocalizedDate(date: string): string {
 }
 
 export const Post = ({id, image, date, title, author, text, lesson_num, mostPopular, aside, search}: PostPropsExtended)=> {
+	const user = useAppSelector(state => state.auth.profileData.user);
+	// const [favourites, setFavourites] = useLocalStorage('favourites', initFavourites);
+	const [favourites, setFavourites] = useState(initFavourites);
+
+	const toggleFavourites = (id: number) => {
+		if (favourites.includes(id)) {
+			console.log('INCLUDES');
+			setFavourites(favourites.filter(item => item !== id))
+		} else {
+			console.log('NOT INCLUDES');
+			console.log(favourites);  // МАССИВ ВСЕГДА ПУСТОЙ
+			setFavourites(prevState => [...prevState, id]);
+		}
+}
+
+	useEffect(
+		() => {
+			console.log(favourites) // ПОКАЗЫВАЕТ ПРАВИЛЬНО
+		},  [favourites]
+	)
 
 	return (
 		<PostWrapper search={search} id={id.toString()}>
@@ -44,12 +69,12 @@ export const Post = ({id, image, date, title, author, text, lesson_num, mostPopu
 				</PostContainer>
 			</Link>
 			<PostActionsWrapper>
-				<ActionButton><ThumbsUpIcon /></ActionButton>
+				<ActionButton disabled={!user}><ThumbsUpIcon /></ActionButton>
 				<PostPopularity>{lesson_num}</PostPopularity>
-				<ActionButton error={true}><ThumbsDownIcon /></ActionButton>
+				<ActionButton error={true} disabled={!user}><ThumbsDownIcon /></ActionButton>
 				<ActionPanelFiller />
-				<ActionButton><BookmarkIcon /></ActionButton>
-				<ActionButton><MoreIcon /></ActionButton>
+				<ActionButton disabled={!user} className={favourites.includes(id) ? 'active' : ''} onClick={() => toggleFavourites(id)}><BookmarkIcon /></ActionButton>
+				<ActionButton disabled={user ? user.id !== author : true}><MoreIcon /></ActionButton>
 			</PostActionsWrapper>
 		</PostWrapper>
 	)

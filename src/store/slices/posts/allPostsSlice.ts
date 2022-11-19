@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {PostProps, PostsData} from './postsSlice';
+import {PostsData} from './postsSlice';
 
 export const fetchAllPosts = createAsyncThunk<PostsData, string | undefined, {rejectValue: string}>(
 	'posts/fetchAllPosts',

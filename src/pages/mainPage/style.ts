@@ -9,7 +9,6 @@ export const StyledMainArea = styled.div`
     padding-bottom: ${72/16}rem;
   }
 `
-
 StyledMainArea.displayName = 'StyledMainArea';
 
 export const PageTitle = styled.h1`

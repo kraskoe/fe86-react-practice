@@ -2,9 +2,9 @@ import {FullscreenPost} from '../../components/main/fullscreenPost';
 import {useAppDispatch, useAppSelector} from '../../store/hooks/hooks';
 import {useParams} from 'react-router-dom';
 import React, {useEffect} from 'react';
-import {fetchPost} from '../../store/posts/postSlice';
+import {fetchPost} from '../../store/slices/posts/postSlice';
 import {Spinner} from '../../components/main/spinner';
-import {fetchAllPosts} from '../../store/posts/allPostsSlice';
+import {fetchAllPosts} from '../../store/slices/posts/allPostsSlice';
 import {PostNavigation} from '../../components/main/postNavigation';
 import { BreadCrumbs } from '../../components/main/breadCrumbs';
 

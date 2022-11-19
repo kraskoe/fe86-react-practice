@@ -1,8 +1,8 @@
 import {AuthButton, AuthError, AuthForm, AuthLabel, AuthLink, AuthTextInput, AuthToggleWrapper} from '../shared/style';
 import React, {FormEvent, useEffect, useRef, useState} from 'react';
 import {useLocation} from 'react-router-dom';
-import {registerNewUser} from '../../../store/auth/authSlice';
-import {IRegisterRequest} from '../../../store/auth/types';
+import {registerNewUser} from '../../../store/slices/auth/authSlice';
+import {IRegisterRequest} from '../../../store/slices/auth/types';
 import {useAppDispatch} from '../../../store/hooks/hooks';
 import {RegistrationConfirmationPopup} from '../regConfirmPopup';
 import {RegistrationSuccessPopup} from '../regSuccessPopup';
@@ -17,7 +17,7 @@ export const SignUpForm = () => {
 	}
 	const initialErrorState = {
 		error: false,
-		name: '',
+		username: '',
 		email: '',
 		password: '',
 		confirmPassword: '',
@@ -54,7 +54,7 @@ export const SignUpForm = () => {
 			setConfirmRegistrationState(true);
 		} else {
 			if (resultAction.payload) {
-				setErrorState({...errorState , serverError: resultAction.payload.username || resultAction.payload.email || resultAction.payload.password || 'Signup error'})
+				setErrorState({...errorState , username: resultAction.payload.username || '', email: resultAction.payload.email || '', password: resultAction.payload.password || ''})
 			} else {
 				setErrorState({...errorState , serverError: resultAction.error.message || 'Signup error'})
 			}
@@ -79,7 +79,7 @@ export const SignUpForm = () => {
 			if (!patternEmail.test(value)) {
 				if (!errorState.error) setErrorState({...errorState, error: true})
 			} else {
-				if (!errorState.name && !errorState.password && !errorState.confirmPassword) setErrorState({...errorState, error: false})
+				if (!errorState.username && !errorState.password && !errorState.confirmPassword) setErrorState({...errorState, error: false})
 			}
 		}
 
@@ -87,7 +87,7 @@ export const SignUpForm = () => {
 			if (value.trim().length < 8) {
 				if (!errorState.error) setErrorState({...errorState, error: true})
 			} else {
-				if (!errorState.name && !errorState.email && !errorState.confirmPassword) setErrorState({...errorState, error: false})
+				if (!errorState.username && !errorState.email && !errorState.confirmPassword) setErrorState({...errorState, error: false})
 			}
 		}
 
@@ -95,7 +95,7 @@ export const SignUpForm = () => {
 			if (value.trim() && value !== passwordRef.current?.value) {
 				if (!errorState.error) setErrorState({...errorState, error: true})
 			} else {
-				if (!errorState.name && !errorState.email && !errorState.password) setErrorState({...errorState, error: false})
+				if (!errorState.username && !errorState.email && !errorState.password) setErrorState({...errorState, error: false})
 			}
 		}
 	}
@@ -109,8 +109,8 @@ export const SignUpForm = () => {
 
 		if (type === 'text' && value.trim()) {
 			if (!patternName.test(value)) {
-				setErrorState({...errorState, name: 'Wrong format. Only letters, digits and @ . + - _ allowed.'})
-			} else setErrorState({...errorState, name: ''})
+				setErrorState({...errorState, username: 'Wrong format. Only letters, digits and @ . + - _ allowed.'})
+			} else setErrorState({...errorState, username: ''})
 		}
 
 		if (type === 'email' && value.trim()) {
@@ -145,7 +145,7 @@ export const SignUpForm = () => {
 			<AuthForm noValidate={true} onSubmit={handleSubmit}>
 				{errorState.serverError && <div><AuthError p0>{errorState.serverError}</AuthError></div>}
 				<AuthLabel>
-					<div>Name{errorState.name && <AuthError>{errorState.name}</AuthError>}</div>
+					<div>Name{errorState.username && <AuthError>{errorState.username}</AuthError>}</div>
 					<div style={{display: 'flex'}}>
 						<AuthTextInput
 							type={'text'}
@@ -153,6 +153,7 @@ export const SignUpForm = () => {
 							placeholder={'Your name'}
 							name={'username'}
 							value={username}
+							error={!!errorState.username}
 							onChange={handleInputChange}
 							onBlur={handleBlur}
 							ref={nameRef} />
@@ -168,6 +169,7 @@ export const SignUpForm = () => {
 							placeholder={'Your email'}
 							name={'email'}
 							value={email}
+							error={!!errorState.email}
 							onChange={handleInputChange}
 							onBlur={handleBlur}
 							ref={emailRef} />
@@ -183,6 +185,7 @@ export const SignUpForm = () => {
 							placeholder={'Your password'}
 							name={'password'}
 							value={password}
+							error={!!errorState.password}
 							onChange={handleInputChange}
 							onBlur={handleBlur}
 							ref={passwordRef} />
@@ -198,6 +201,7 @@ export const SignUpForm = () => {
 							placeholder={'Confirm password'}
 							name={'confirmPassword'}
 							value={confirmPassword}
+							error={!!errorState.confirmPassword}
 							onChange={handleInputChange}
 							onBlur={handleBlur}
 							ref={confirmPasswordRef} />

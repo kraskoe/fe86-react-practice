@@ -8,9 +8,9 @@ import darkIcon from '../../../images/dark-icon.svg'
 import { MainThemeContext } from '../../../context/themeState';
 import {Link} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks/hooks';
-import {toggleMenuOpen} from '../../../store/burger/burgerSlice';
+import {toggleMenuOpen} from '../../../store/slices/burger/burgerSlice';
 import {RequireAuth} from '../../../containers/requireAuth';
-import {logOut} from '../../../store/auth/authSlice';
+import {logOut} from '../../../store/slices/auth/authSlice';
 import {FromLink} from '../../shared/fromLink';
 
 export const MainMenu = () => {

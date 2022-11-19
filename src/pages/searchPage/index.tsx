@@ -2,12 +2,13 @@ import {PageTitle} from '../mainPage/style';
 import {Post} from '../../components/main/post';
 import React, {useEffect} from 'react';
 import {useParams, useSearchParams} from 'react-router-dom';
-import {fetchPosts} from '../../store/posts/postsSlice';
+import {fetchPosts} from '../../store/slices/posts/postsSlice';
 import {useAppDispatch, useAppSelector} from '../../store/hooks/hooks';
 import {Pagination} from '../../components/main/pagination';
 import {Spinner} from '../../components/main/spinner';
-import {fetchAllPosts} from '../../store/posts/allPostsSlice';
+import {fetchAllPosts} from '../../store/slices/posts/allPostsSlice';
 import {BreadCrumbs} from '../../components/main/breadCrumbs';
+import {FlexColContainer, FlexFiller} from '../../components/shared/style';
 
 export const SearchPage = () => {
 	const postsData = useAppSelector(state => state.posts);
@@ -30,14 +31,14 @@ export const SearchPage = () => {
 
 	useEffect(() => {
 		dispatch(fetchPosts(searchQuery))
-	}, [page])
+	}, [searchString, page])
 
 	useEffect(() => {
 		dispatch(fetchAllPosts('date'))
 	}, []);
 
 	useEffect(() => {
-		setSearchParams({search: searchString});
+		setSearchParams({search: JSON.parse(sessionStorage.getItem('search') || '')});
 	},[page])
 
 	return (
@@ -46,14 +47,19 @@ export const SearchPage = () => {
 			{postsData.status === 'succeeded' ?
 				<>
 					<BreadCrumbs />
-					<PageTitle>Search results for :</PageTitle>
-					{posts.map((post) => <Post
+					<PageTitle>Search results for : {searchString}</PageTitle>
+					{posts.length ?
+						posts.map((post) => <Post
 						search
 						key={post.id}
-						{...post}  />)}
-					{allPostsData.status === 'succeeded' ?
+						{...post}  />) :
+						<PageTitle>Nothing found</PageTitle>
+					}
+					{posts.length ?
+						(allPostsData.status === 'succeeded' ?
 						<Pagination maxPage={maxPage}/> :
-						<Spinner />
+						<Spinner />) :
+						<></>
 					}
 				</> :
 				<Spinner/>
