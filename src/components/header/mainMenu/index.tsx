@@ -12,6 +12,7 @@ import {toggleMenuOpen} from '../../../store/slices/burger/burgerSlice';
 import {RequireAuth} from '../../../containers/requireAuth';
 import {logOut} from '../../../store/slices/auth/authSlice';
 import {FromLink} from '../../shared/fromLink';
+import {setFavourites} from '../../../store/slices/favourites/favouritesSlice';
 
 export const MainMenu = () => {
 	const user = useAppSelector((state) => state.auth.profileData.user);
@@ -28,6 +29,8 @@ export const MainMenu = () => {
 	};
 
 	const handleLogOut = () => {
+		sessionStorage.clear();
+		dispatch(setFavourites({favourites: []}));
 		dispatch(logOut());
 	};
 
@@ -45,7 +48,9 @@ export const MainMenu = () => {
 			</RequireAuth>}
 			<Link to='/'><MainMenuButton>Home</MainMenuButton></Link>
 			{user && <RequireAuth>
-				<MainMenuButton>Add Post</MainMenuButton>
+				<Link to={'/posts/new'}>
+					<MainMenuButton>Add Post</MainMenuButton>
+				</Link>
 			</RequireAuth>}
 			<MainMenuFiller />
 			<ThemeButtonWrapper>

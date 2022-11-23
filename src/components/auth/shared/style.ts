@@ -7,16 +7,19 @@ interface IInputProps {
 
 export const AuthTextInput = styled.input<IInputProps>`
 	background-color: ${(props) => props.theme.textPrimary};
-	color: ${(props) => props.theme.textPale};
+	color: ${(props) => props.theme.textInput};
 	padding: ${18/16}rem ${20/16}rem;
 	flex: 1 0 auto;
 	outline: none;
 	border: ${props => props.error ? `${props.theme.error} 2px solid` : 'transparent 2px solid'};
 	font-size: 1rem;
-	
-	&::placeholder {
+  font-family: 'Inter', sans-serif;
+
+  &::placeholder {
 		font-size: 1rem;
-	}
+    color: ${(props) => props.theme.textPale};
+    font-family: 'Inter', sans-serif;
+  }
 `
 AuthTextInput.displayName = 'AuthTextInput';
 
@@ -24,6 +27,7 @@ export const AuthLabel = styled.label`
   color: ${(props) => props.theme.textSecondary};
 	font-weight: 600;
 	display: block;
+	width: 100%;
 	
 	div:first-child {
     margin-bottom: 0.5rem;

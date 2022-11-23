@@ -6,7 +6,7 @@ import {
 	IRegisterRequest,
 	IActivation,
 	ILoginError,
-	ISignupError, IActivationError
+	ISignupError, IActivationError, IRefreshTokenRequest, IRefreshTokenResponse
 } from './types';
 import {baseUrl, Endpoints} from './endpoints';
 
@@ -53,6 +53,25 @@ export const getToken = createAsyncThunk<ILoginResponse, ILoginRequest, {rejectV
 		}
 
 		return (await response.json()) as ILoginResponse;
+	});
+
+export const refreshToken = createAsyncThunk<IRefreshTokenResponse, IRefreshTokenRequest, {rejectValue: string}>(
+	'auth/tokenHandler',
+	async (refreshToken, thunkApi) => {
+		const response = await fetch(`${baseUrl}${Endpoints.REFRESH}`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(refreshToken)
+			});
+
+		if (!response.ok) {
+			return thunkApi.rejectWithValue((await response.json()))
+		}
+
+		return (await response.json()) as IRefreshTokenResponse;
 	});
 
 export const fetchUserData = createAsyncThunk<IUser, string, {rejectValue: ILoginError}>(
@@ -132,6 +151,21 @@ const authSlice = createSlice({
 			state.authData.token = null;
 			if (action.payload) {
 				state.authData.error = action.payload.detail;
+			} else {
+				state.authData.error = action.error.message ? action.error.message : 'Server error'
+			}
+		});
+		builder.addCase(refreshToken.fulfilled, (state, {payload}) => {
+			sessionStorage.setItem('token', JSON.stringify({...state.authData.token, access: payload.access}));
+			if (state.authData.token) {
+				state.authData.token = {...state.authData.token, access: payload.access}
+			}
+			state.authData.error = null;
+		});
+		builder.addCase(refreshToken.rejected, (state, action) => {
+			state.authData.token = null;
+			if (action.payload) {
+				state.authData.error = action.payload;
 			} else {
 				state.authData.error = action.error.message ? action.error.message : 'Server error'
 			}

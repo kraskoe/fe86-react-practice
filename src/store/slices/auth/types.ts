@@ -42,3 +42,10 @@ export interface ISignupError {
 	password?: string,
 }
 
+export interface IRefreshTokenRequest {
+	refresh: string,
+}
+
+export interface IRefreshTokenResponse {
+	access: string,
+}

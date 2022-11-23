@@ -1,12 +1,12 @@
-import {useLocation, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {Desktop, TabletOrDesktop } from '../../../utils/detectScreenSize';
 import {ReactComponent as ArrowLeftIcon} from '../../../images/arrow-left-icon.svg';
 import {ReactComponent as ArrowRightIcon} from '../../../images/arrow-right-icon.svg';
 import { PaginationWrapper } from '../pagination/style';
 import {PaginationLink} from '../pagination/paginationLink';
-import {PostProps} from '../../../store/slices/posts/postsSlice';
 import {ActionPanelFiller} from '../post/style';
 import {PostNavTitle, PostNavWrapper} from './style';
+import {PostProps} from '../../../store/slices/posts/types';
 
 interface PostNavigationProps {
 	allPosts: PostProps[],

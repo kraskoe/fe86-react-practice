@@ -47,11 +47,15 @@ export const BreadCrumbs = () => {
 		},
 		{
 			path: '/posts',
-			breadcrumb: 'All posts',
+			breadcrumb: null,
 		},
 		{
 			path: '/posts/:page',
-			breadcrumb: null,
+			breadcrumb: 'All posts',
+		},
+		{
+			path: '/posts/new',
+			breadcrumb: 'Create post',
 		},
 		{
 			path: '/favourites',

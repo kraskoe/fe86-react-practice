@@ -11,8 +11,6 @@ import { Desktop } from '../../utils/detectScreenSize';
 import {Pagination} from '../../components/main/pagination';
 import {useParams} from 'react-router-dom';
 import {BreadCrumbs} from '../../components/main/breadCrumbs';
-import {useLocalStorage} from '../../storage/hooks';
-import {initFavourites} from '../../storage/initValues';
 
 
 export const BlogPage = () => {
