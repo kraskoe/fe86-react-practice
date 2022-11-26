@@ -2,27 +2,28 @@ import jwtDecode from 'jwt-decode';
 import {logOut, refreshToken} from '../slices/auth/authSlice';
 import {AppDispatch} from '../index';
 import {Middleware} from 'redux';
+import {getLocalstorageItem} from '../../storage/utils';
 
 export const jwtRefreshMiddleware: Middleware<any> = (store) => {
 	const dispatch = store.dispatch as AppDispatch;
 	return (next: any) => (action) => {
 		console.log(action);
-		if (action.type === 'posts/newPost/pending') {
-			const access = store.getState().auth.authData.token.access;
-			if (access) {
-				const decoded: {exp: number} = jwtDecode(access);
-				if (decoded.exp && decoded.exp - 10 < Date.now()/1000) {
-					const refresh = store.getState().auth.authData.token.refresh;
-						dispatch(refreshToken({refresh: refresh}))
-							.then(() => {
-								return next(action);
-							})
-							.catch((error: Error) => {
-								return store.dispatch(logOut());
-							})
-				}
-			}
-		}
+		// if (action.type === 'posts/newPost/pending') {
+		// 	const access = getLocalstorageItem('token').access;
+		// 	if (access) {
+		// 		const decoded: {exp: number} = jwtDecode(access);
+		// 		if (decoded.exp && decoded.exp - 10 < Date.now()/1000) {
+		// 			const refresh = getLocalstorageItem('token').refresh;
+		// 				dispatch(refreshToken(null))
+		// 					.then(() => {
+		// 						return next(action);
+		// 					})
+		// 					.catch((error: Error) => {
+		// 						return store.dispatch(logOut());
+		// 					})
+		// 		}
+		// 	}
+		// }
 		return next(action);
 	}
 }

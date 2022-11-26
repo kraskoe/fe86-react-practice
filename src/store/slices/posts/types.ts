@@ -21,8 +21,22 @@ export interface PostsState {
 	error: string | null,
 }
 
+export interface UserPostsState {
+	posts: PostProps[] | null,
+	status: 'idle' | 'pending' | 'succeeded' | 'failed',
+	error: string | null,
+}
+
 export interface INewPostError {
 	title?: string,
 	text?: string
 	image?: string,
+}
+
+export interface IFetchPostsProps {
+	page?: string,
+	ordering?: string,
+	limit?: string,
+	search?: string,
+	offset?: boolean,
 }

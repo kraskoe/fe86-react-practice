@@ -1,15 +1,8 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {PostsData, PostsState} from './types';
+import {IFetchPostsProps, PostsData, PostsState} from './types';
 
-interface FetchPostsProps {
-	page?: string,
-	ordering?: string,
-	limit?: string,
-	search?: string,
-	offset?: boolean,
-}
 
-export const fetchPosts = createAsyncThunk<PostsData, object & FetchPostsProps, {rejectValue: string}>(
+export const fetchPosts = createAsyncThunk<PostsData, object & IFetchPostsProps, {rejectValue: string}>(
 	'posts/fetchPosts',
 	async function ({page, ordering, limit,search, offset}, {rejectWithValue}) {
 			const orderingQuery = `&ordering=${ordering}`;

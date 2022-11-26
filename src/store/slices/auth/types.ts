@@ -1,3 +1,13 @@
+export interface IAuthState {
+	authData: {
+		// token: ILoginResponse | null,
+		error: string | null,
+	},
+	profileData: {
+		user: IUser| null,
+		error: string | null,
+	},
+}
 
 export interface IUser {
 	username: string,
@@ -21,7 +31,7 @@ export interface ILoginRequest {
 	password: string,
 }
 
-export interface ILoginResponse {
+export interface IToken {
 	refresh: string,
 	access: string,
 }

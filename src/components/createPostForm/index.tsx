@@ -1,58 +1,55 @@
 import {CancelButton, FileInput, InputFlexWrapper, NewPostForm, TextArea} from './style';
 import {AuthButton, AuthError, AuthLabel, AuthTextInput} from '../auth/shared/style';
-import React, {FormEvent, useEffect, useRef, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../store/hooks/hooks';
+import {useAppDispatch} from '../../store/hooks/hooks';
 import {createNewPost} from '../../store/slices/posts/newPostSlice';
 
 export const CreatePostForm = () => {
 	const initialFormState = {
 		ready: false,
+		pending: false,
 		postTitle: '',
 		text: '',
 	}
 	const initialErrorState = {
-		error: false,
 		postTitle: '',
 		text: '',
 		image: '',
+		serverError: '',
 	}
 	const [formState, setFormState] = useState(initialFormState);
 	const [errorState, setErrorState] = useState(initialErrorState);
 	const {postTitle, text} = formState;
 	const navigate = useNavigate();
 	const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-	const titleRef = useRef<HTMLInputElement>(null);
-	const textRef = useRef<HTMLTextAreaElement>(null);
 	const dispatch = useAppDispatch();
-	const access = useAppSelector(state => state.auth?.authData?.token?.access) || '';
 
 	const isFormReady = () => {
-		if (titleRef.current?.value.trim() && textRef.current?.value.trim() && uploadedFile && !errorState.error) {
+		if (formState.postTitle.trim() &&
+			formState.text.trim() &&
+			uploadedFile &&
+			!errorState.postTitle &&
+			!errorState.text &&
+			!errorState.image) {
 			setFormState({...formState, ready: true})
 		} else {
 			setFormState({...formState, ready: false})
 		}
 	}
-	const isError = () => {
-		if (errorState.text || errorState.image || errorState.postTitle) {
-			setErrorState({...errorState, error: true})
-		} else {
-			setErrorState({...errorState, error: false})
-		}
-	}
 
-	useEffect(isFormReady,[titleRef.current?.value, textRef.current?.value, uploadedFile]);
-	useEffect(isError,[errorState.text, errorState.image, errorState.postTitle]);
+	useEffect(isFormReady,[formState.postTitle, formState.text, uploadedFile]);
 
 	const handleUpload = async (formData: FormData) => {
-		const resultAction = await dispatch(createNewPost({formData, access}))
+		setFormState({...formState, pending: true});
+		const resultAction = await dispatch(createNewPost(formData))
 		if (createNewPost.fulfilled.match(resultAction)) {
-			console.log(resultAction.payload);
+			const id = resultAction.payload?.id;
+			setFormState({...formState, pending: false});
+			navigate(`/post/${id}`);
 		} else {
-			if (resultAction.payload) {
-				setErrorState({...errorState , postTitle: resultAction.payload.title || 'Something went wrong', text: resultAction.payload.text || '', image: resultAction.payload.image || ''});
-			} else setErrorState({...errorState , postTitle: 'Something went wrong'});
+			setErrorState({...errorState , postTitle: resultAction.error.message || 'Something went wrong'});
+			setFormState({...formState, pending: false});
 		}
 	}
 
@@ -90,10 +87,8 @@ export const CreatePostForm = () => {
 
 	const handleSubmit = (event: FormEvent) => {
 		event.preventDefault();
-		console.log(event);
 		if (formState.ready) {
 			const form = event.target as HTMLFormElement;
-			// const formData = new FormData(form);
 			const formData = new FormData();
 			formData.append('text', form.text.value);
 			formData.append('lesson_num', String(86));
@@ -109,7 +104,7 @@ export const CreatePostForm = () => {
 	}
 
 	return <>
-		<NewPostForm onSubmit={handleSubmit}>
+		<NewPostForm onSubmit={handleSubmit} encType={'multipart/form-data'}>
 			<InputFlexWrapper>
 				<div style={{flex: '1 0 48%'}}>
 					<AuthLabel>
@@ -122,7 +117,6 @@ export const CreatePostForm = () => {
 								name={'postTitle'}
 								value={postTitle}
 								onChange={handleInputChange}
-								ref={titleRef}
 							/>
 						</div>
 					</AuthLabel>
@@ -133,6 +127,7 @@ export const CreatePostForm = () => {
 						<div style={{display: 'flex'}}>
 							<FileInput
 								type={'file'}
+								name={'image'}
 								accept={'image/*,.png,.jpg,.gif,.web,.webp'}
 								onChange={handleFileChange}
 							/>
@@ -149,17 +144,17 @@ export const CreatePostForm = () => {
 						name={'text'}
 						value={text}
 						onChange={handleInputChange}
-						ref={textRef}
 					/>
 				</div>
 			</AuthLabel>
 			<InputFlexWrapper>
 				<CancelButton
 					type={'reset'}
+					disabled={formState.pending}
 					onClick={handleCancel}>Cancel</CancelButton>
 				<AuthButton
 					type={'submit'}
-					disabled={!formState.ready}
+					disabled={!formState.ready || formState.pending}
 				>Add post</AuthButton>
 			</InputFlexWrapper>
 		</NewPostForm>

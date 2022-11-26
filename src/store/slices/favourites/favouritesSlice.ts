@@ -1,12 +1,13 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {getLocalstorageItem, setLocalstorageItem} from '../../../storage/utils';
 
 interface IInitialState {
 	favourites: number[];
 }
 
 const initialState: IInitialState = {
-	favourites: sessionStorage.getItem('favourites') ?
-		JSON.parse(sessionStorage.getItem('favourites') || '') :
+	favourites: localStorage.getItem('favourites') ?
+		getLocalstorageItem('favourites') :
 		[]
 };
 
@@ -15,7 +16,7 @@ const favouritesSlice = createSlice({
 	initialState,
 	reducers: {
 		setFavourites(state, action) {
-			sessionStorage.setItem('favourites', JSON.stringify(action.payload.favourites));
+			setLocalstorageItem('favourites', action.payload.favourites);
 			state.favourites = action.payload.favourites;
 		}
 	}

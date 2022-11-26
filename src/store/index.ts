@@ -8,12 +8,14 @@ import searchReducer from './slices/search/searchSlice';
 import favouritesReducer from './slices/favourites/favouritesSlice';
 import newPostReducer from './slices/posts/newPostSlice';
 import {jwtRefreshMiddleware} from './middleware';
+import userPostsReducer from './slices/posts/userPostsSlice';
 
 const store = configureStore({
 	reducer: {
 		auth: authReducer,
 		burger: burgerReducer,
 		posts: postsReducer,
+		userPosts: userPostsReducer,
 		post: postReducer,
 		allPosts: allPostsReducer,
 		search: searchReducer,

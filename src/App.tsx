@@ -21,6 +21,7 @@ import {LoginPage} from './pages/loginPage';
 import {RequireAuth} from './containers/requireAuth';
 import { SignUpPage } from './pages/signUpPage';
 import {CreatePostPage} from './pages/createPostPage';
+import {UserPostsPage} from './pages/userPostsPage';
 
 const router = createBrowserRouter(createRoutesFromElements(
 	<Route path='/' element={<Layout />}>
@@ -36,6 +37,11 @@ const router = createBrowserRouter(createRoutesFromElements(
 		<Route path='posts/new' element={
 			<RequireAuth>
 				<CreatePostPage />
+			</RequireAuth>
+				} />
+		<Route path='myposts' element={
+			<RequireAuth>
+				<UserPostsPage />
 			</RequireAuth>
 				} />
 		<Route path='popular' element={<Navigate replace to='/popular/1' />} />

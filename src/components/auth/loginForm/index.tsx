@@ -1,47 +1,55 @@
-import React, {FormEvent, useEffect, useRef, useState} from 'react';
-import {useAppDispatch, useAppSelector} from '../../../store/hooks/hooks';
+import React, {FormEvent, useEffect, useState} from 'react';
+import {useAppDispatch} from '../../../store/hooks/hooks';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {ILoginRequest} from '../../../store/slices/auth/types';
 import {fetchUserData, getToken} from '../../../store/slices/auth/authSlice';
 import {AuthButton, AuthError, AuthForm, AuthLabel, AuthLink, AuthTextInput, AuthToggleWrapper} from '../shared/style';
+import {EMAIL_ERROR,
+	PASSWORD_ERROR,
+	isEmailValid,
+	isPasswordValid} from '../validation';
 
 export const LoginForm = () => {
 	const initialFormState = {
 		ready: false,
+		pending: false,
 		email: '',
 		password: '',
 	}
 	const initialErrorState = {
-		error: false,
 		email: '',
 		password: '',
+		serverError: '',
 	}
 	const [formState, setFormState] = useState(initialFormState);
 	const [errorState, setErrorState] = useState(initialErrorState);
 	const {email, password} = formState;
-	const emailRef = useRef<HTMLInputElement>(null);
-	const passwordRef = useRef<HTMLInputElement>(null);
-	const pattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,8})+$/
 	const dispatch = useAppDispatch();
-	const serverError = useAppSelector(state => state.auth.authData.error)
 	const navigate = useNavigate();
 	const location = useLocation();
 	const fromPage = location.state?.from || '/';
 
-	const isFormReady = () => {
-		if (emailRef.current?.value.trim() && passwordRef.current?.value.trim() && !errorState.error) {
+	const setFormReadyState = () => {
+		if (formState.email.trim() &&
+			formState.password.trim() &&
+			!errorState.password &&
+			!errorState.email) {
 			setFormState({...formState, ready: true})
 		} else {
 			setFormState({...formState, ready: false})
 		}
 	}
 
-	useEffect(isFormReady,[emailRef.current?.value, passwordRef.current?.value]);
+	useEffect(setFormReadyState,[formState.email, formState.password]);
 
 	const handleGetToken = async (loginData: ILoginRequest) => {
+		setFormState({...formState, pending: true});
 		const resultAction = await dispatch(getToken(loginData))
 		if (getToken.fulfilled.match(resultAction)) {
 			handleFetchUserData(resultAction.payload.access);
+		} else {
+			setErrorState({...errorState , serverError: resultAction.error.message || 'Login error'})
+			setFormState({...formState, pending: false});
 		}
 	}
 
@@ -49,6 +57,10 @@ export const LoginForm = () => {
 		const resultAction = await dispatch(fetchUserData(accessToken))
 		if (fetchUserData.fulfilled.match(resultAction)) {
 			navigate(fromPage);
+			setFormState({...formState, pending: false});
+		} else {
+			setErrorState({...errorState , serverError: resultAction.error.message || 'Error fetching user data'})
+			setFormState({...formState, pending: false});
 		}
 	}
 
@@ -59,18 +71,18 @@ export const LoginForm = () => {
 		setFormState({...formState, [name]: value});
 
 		if (type === 'email' && value.trim()) {
-			if (!pattern.test(value)) {
-				if (!errorState.error) setErrorState({...errorState, error: true})
+			if (isEmailValid(value)) {
+				setErrorState({...errorState, email: ''});
 			} else {
-				if (!errorState.password) setErrorState({...errorState, error: false})
+				setErrorState({...errorState, email: ' '});
 			}
 		}
 
 		if (type === 'password' && value.trim()) {
-			if (value.trim().length < 8) {
-				if (!errorState.error) setErrorState({...errorState, error: true})
+			if (isPasswordValid(value)) {
+				setErrorState({...errorState, password: ''});
 			} else {
-				if (!errorState.email) setErrorState({...errorState, error: false})
+				setErrorState({...errorState, password: ' '});
 			}
 		}
 	}
@@ -79,15 +91,15 @@ export const LoginForm = () => {
 		const { value, type } = event.target as HTMLInputElement;
 
 		if (type === 'email' && value.trim()) {
-			if (!pattern.test(value)) {
-				setErrorState({...errorState, email: 'Please, enter correct e-mail'})
-			} else setErrorState({...errorState, email: ''})
+			if (isEmailValid(value)) {
+				setErrorState({...errorState, email: ''})
+			} else setErrorState({...errorState, email: EMAIL_ERROR})
 		}
 
 		if (type === 'password' && value.trim()) {
-			if (value.trim().length < 8) {
-				setErrorState({...errorState, password: 'Your password must contain at least 8 symbols'})
-			} else setErrorState({...errorState, password: ''})
+			if (isPasswordValid(value)) {
+				setErrorState({...errorState, password: ''})
+			} else setErrorState({...errorState, password: PASSWORD_ERROR})
 		}
 	}
 
@@ -106,7 +118,7 @@ export const LoginForm = () => {
 				noValidate={true}
 				autoComplete={'on'}
 				onSubmit={handleSubmit}>
-				{serverError && <div><AuthError p0>{serverError}</AuthError></div>}
+				{errorState.serverError && <div><AuthError p0>{errorState.serverError}</AuthError></div>}
 				<AuthLabel>
 					<div>Email{errorState.email && <AuthError>{errorState.email}</AuthError>}</div>
 					<div style={{display: 'flex'}}>
@@ -117,9 +129,10 @@ export const LoginForm = () => {
 							placeholder={'Your email'}
 							name={'email'}
 							value={email}
+							error={!!String(errorState.email).trim()}
 							onChange={handleInputChange}
 							onBlur={handleBlur}
-							ref={emailRef} />
+						/>
 					</div>
 				</AuthLabel>
 				<AuthLabel>
@@ -132,13 +145,14 @@ export const LoginForm = () => {
 							placeholder={'Your password'}
 							name={'password'}
 							value={password}
+							error={!!String(errorState.password).trim()}
 							onChange={handleInputChange}
 							onBlur={handleBlur}
-							ref={passwordRef} />
+						/>
 					</div>
 				</AuthLabel>
 				<AuthLink className={'mt-8'} to={'/signup'} >Forgot password?</AuthLink>
-				<AuthButton disabled={!formState.ready}>Sign In</AuthButton>
+				<AuthButton disabled={!formState.ready || formState.pending}>Sign In</AuthButton>
 				<AuthToggleWrapper>
 					Don’t have an account? <AuthLink to={'/signup'} state={{from: fromPage}}>Sign Up</AuthLink>
 				</AuthToggleWrapper>

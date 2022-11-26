@@ -58,6 +58,12 @@ export const CancelButton = styled.button`
 	&:active {
     background-color: ${(props) => props.theme.textPale};
   }
+
+  &:disabled {
+    background-color: ${(props) => props.theme.outline};
+    color: ${(props) => props.theme.textPale};
+    cursor: default;
+  }
 `
 CancelButton.displayName = 'CancelButton';
 

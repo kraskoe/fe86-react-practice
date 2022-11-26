@@ -1,28 +1,22 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {INewPostError, PostProps} from './types';
+import {fetchWithAuth} from '../../../api/fetchWithAuth';
+import {AppDispatch} from '../../index';
 
-interface ICreateNewPostProps {
-	formData: FormData,
-	access: string,
-}
-
-export const createNewPost = createAsyncThunk<PostProps, ICreateNewPostProps, {rejectValue: INewPostError}>(
+export const createNewPost = createAsyncThunk<PostProps, FormData, {rejectValue: INewPostError}>(
 	'posts/newPost',
-	async function ({formData, access}, {rejectWithValue}) {
-		const response = await fetch('https://studapi.teachmeskills.by/blog/posts/',
+	async function (formData, thunkApi) {
+		const dispatch = thunkApi.dispatch as AppDispatch;
+		const response = await fetchWithAuth('https://studapi.teachmeskills.by/blog/posts/',
 			{
 				method: 'POST',
-				headers: {
-					'Content-Type': 'multipart/form-data',
-					'Authorization': 'Bearer ' + access,
-					'accept': 'application/json',
-				},
 				body: formData,
-			}
+			},
+			dispatch
 			);
 
 		if (!response.ok) {
-			return rejectWithValue((await response.json()));
+			return thunkApi.rejectWithValue((await response.json()));
 		}
 
 		return await response.json();
