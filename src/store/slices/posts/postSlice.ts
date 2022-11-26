@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {PostProps} from './postsSlice';
+import {PostProps} from './types';
 
 export const fetchPost = createAsyncThunk<PostProps, string, {rejectValue: string}>(
 	'posts/fetchPost',

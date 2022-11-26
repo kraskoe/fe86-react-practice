@@ -46,6 +46,7 @@ FullscreenPostText.displayName = 'FullscreenPostText';
 export const FullscreenPopularButtonWrapper = styled.div`
   display: flex;
 	justify-content: space-between;
+	align-items: center;
 	gap: 0.5rem;
   margin-bottom: ${24/16}rem;
 

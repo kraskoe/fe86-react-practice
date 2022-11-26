@@ -1,22 +1,32 @@
 import {AuthButton, AuthError, AuthForm, AuthLabel, AuthLink, AuthTextInput, AuthToggleWrapper} from '../shared/style';
-import React, {FormEvent, useEffect, useRef, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
 import {registerNewUser} from '../../../store/slices/auth/authSlice';
 import {IRegisterRequest} from '../../../store/slices/auth/types';
 import {useAppDispatch} from '../../../store/hooks/hooks';
 import {RegistrationConfirmationPopup} from '../regConfirmPopup';
 import {RegistrationSuccessPopup} from '../regSuccessPopup';
+import {
+	PASSWORD_ERROR,
+	CONFIRM_PASSWORD_ERROR,
+	EMAIL_ERROR,
+	USERNAME_ERROR,
+	isConfirmPasswordValid,
+	isEmailValid,
+	isPasswordValid,
+	isUserNameValid
+} from '../validation';
 
 export const SignUpForm = () => {
 	const initialFormState = {
 		ready: false,
+		pending: false,
 		username: '',
 		email: '',
 		password: '',
 		confirmPassword: '',
 	}
 	const initialErrorState = {
-		error: false,
 		username: '',
 		email: '',
 		password: '',
@@ -28,27 +38,29 @@ export const SignUpForm = () => {
 	const [confirmRegistrationState, setConfirmRegistrationState] = useState(false);
 	const [activationState, setActivationState] = useState(false);
 	const {username, email, password, confirmPassword} = formState;
-	const nameRef = useRef<HTMLInputElement>(null);
-	const emailRef = useRef<HTMLInputElement>(null);
-	const passwordRef = useRef<HTMLInputElement>(null);
-	const confirmPasswordRef = useRef<HTMLInputElement>(null);
-	const patternName = /^[\w.@+-]+$/
-	const patternEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,8})+$/
 	const location = useLocation();
 	const fromPage = location.state?.from || '/';
 	const dispatch = useAppDispatch();
 
-	const isFormReady = () => {
-		if (nameRef.current?.value.trim() && emailRef.current?.value.trim() && passwordRef.current?.value.trim() && confirmPasswordRef.current?.value.trim() && !errorState.error) {
+	const setFormReadyState = () => {
+		if (formState.username.trim() &&
+			formState.email.trim() &&
+			formState.password.trim() &&
+			formState.confirmPassword.trim() &&
+			!errorState.username &&
+			!errorState.email &&
+			!errorState.password &&
+			!errorState.confirmPassword) {
 			setFormState({...formState, ready: true})
 		} else {
 			setFormState({...formState, ready: false})
 		}
 	}
 
-	useEffect(isFormReady,[nameRef.current?.value, emailRef.current?.value, passwordRef.current?.value, confirmPasswordRef.current?.value]);
+	useEffect(setFormReadyState,[formState.username, formState.email, formState.password, formState.confirmPassword]);
 
 	const handleRegisterNewUser = async (registerData: IRegisterRequest) => {
+		setFormState({...formState, pending: true});
 		const resultAction = await dispatch(registerNewUser(registerData))
 		if (registerNewUser.fulfilled.match(resultAction)) {
 			setConfirmRegistrationState(true);
@@ -59,6 +71,7 @@ export const SignUpForm = () => {
 				setErrorState({...errorState , serverError: resultAction.error.message || 'Signup error'})
 			}
 		}
+		setFormState({...formState, pending: false});
 	}
 
 	const handleInputChange = (event: FormEvent) => {
@@ -68,34 +81,40 @@ export const SignUpForm = () => {
 		setFormState({...formState, [name]: value});
 
 		if (type === 'text' && value.trim()) {
-			if (!patternName.test(value)) {
-				if (!errorState.error) setErrorState({...errorState, error: true})
+			if (isUserNameValid(value)) {
+				setErrorState({...errorState, username: ''});
 			} else {
-				if (!errorState.email && !errorState.password && !errorState.confirmPassword) setErrorState({...errorState, error: false})
+				setErrorState({...errorState, username: ' '});
 			}
 		}
 
 		if (type === 'email' && value.trim()) {
-			if (!patternEmail.test(value)) {
-				if (!errorState.error) setErrorState({...errorState, error: true})
+			if (isEmailValid(value)) {
+				setErrorState({...errorState, email: ''});
 			} else {
-				if (!errorState.username && !errorState.password && !errorState.confirmPassword) setErrorState({...errorState, error: false})
+				setErrorState({...errorState, email: ' '});
 			}
 		}
 
 		if (type === 'password' && name === 'password' && value.trim()) {
-			if (value.trim().length < 8) {
-				if (!errorState.error) setErrorState({...errorState, error: true})
+			const confirmPasswordValue = formState.confirmPassword;
+			if (isPasswordValid(value)) {
+				if (isConfirmPasswordValid(confirmPasswordValue, value)) {
+					setErrorState({...errorState, password: '', confirmPassword: ''});
+				} else setErrorState({...errorState, password: '', confirmPassword: ' '});
 			} else {
-				if (!errorState.username && !errorState.email && !errorState.confirmPassword) setErrorState({...errorState, error: false})
+				if (isConfirmPasswordValid(confirmPasswordValue, value)) {
+					setErrorState({...errorState, password: ' ', confirmPassword: ''});
+				} else setErrorState({...errorState, password: ' ', confirmPassword: ' '});
 			}
 		}
 
-		if (type === 'password' && name === 'confirmPassword') {
-			if (value.trim() && value !== passwordRef.current?.value) {
-				if (!errorState.error) setErrorState({...errorState, error: true})
+		if (type === 'password' && name === 'confirmPassword' && value.trim()) {
+			const passwordValue = formState.password || '';
+			if (isConfirmPasswordValid(value, passwordValue)) {
+				setErrorState({...errorState, confirmPassword: ''});
 			} else {
-				if (!errorState.username && !errorState.email && !errorState.password) setErrorState({...errorState, error: false})
+				setErrorState({...errorState, confirmPassword: ' '});
 			}
 		}
 	}
@@ -103,32 +122,40 @@ export const SignUpForm = () => {
 	const handleBlur = (event: FormEvent) => {
 		const { name, value, type } = event.target as HTMLInputElement;
 
-		if (nameRef.current?.value.trim() && emailRef.current?.value.trim() && passwordRef.current?.value.trim() && confirmPasswordRef.current?.value.trim()) {
-			setFormState({...formState, ready: true})
-		} else setFormState({...formState, ready: false})
-
 		if (type === 'text' && value.trim()) {
-			if (!patternName.test(value)) {
-				setErrorState({...errorState, username: 'Wrong format. Only letters, digits and @ . + - _ allowed.'})
-			} else setErrorState({...errorState, username: ''})
+			if (isUserNameValid(value)) {
+				setErrorState({...errorState, username: ''})
+			} else setErrorState({...errorState, username: USERNAME_ERROR})
 		}
 
 		if (type === 'email' && value.trim()) {
-			if (!patternEmail.test(value)) {
-				setErrorState({...errorState, email: 'Please, enter correct e-mail'})
-			} else setErrorState({...errorState, email: ''})
+			if (isEmailValid(value)) {
+				setErrorState({...errorState, email: ''})
+			} else setErrorState({...errorState, email: EMAIL_ERROR})
 		}
 
 		if (type === 'password' && name === 'password' && value.trim()) {
-			if (value.trim().length < 8) {
-				setErrorState({...errorState, password: 'Your password must contain at least 8 symbols'})
-			} else setErrorState({...errorState, password: ''})
+			const confirmPasswordValue = formState.confirmPassword;
+			if (isPasswordValid(value)) {
+				if (isConfirmPasswordValid(confirmPasswordValue, value)) {
+					setErrorState({...errorState, password: '', confirmPassword: ''});
+				} else if (confirmPasswordValue.trim()) {
+					setErrorState({...errorState, password: '', confirmPassword: CONFIRM_PASSWORD_ERROR});
+				} else setErrorState({...errorState, password: ''});
+			} else {
+				if (isConfirmPasswordValid(confirmPasswordValue, value)) {
+					setErrorState({...errorState, password: PASSWORD_ERROR, confirmPassword: ''});
+				} else if (confirmPasswordValue.trim()) {
+					setErrorState({...errorState, password: PASSWORD_ERROR, confirmPassword: CONFIRM_PASSWORD_ERROR});
+				} else setErrorState({...errorState, password: PASSWORD_ERROR});
+			}
 		}
 
 		if (type === 'password' && name === 'confirmPassword') {
-			if (value.trim() && value !== passwordRef.current?.value) {
-				setErrorState({...errorState, confirmPassword: 'Passwords doesn\'t match'})
-			} else setErrorState({...errorState, confirmPassword: ''})
+			const passwordValue = formState.password || '';
+			if (isConfirmPasswordValid(value, passwordValue)) {
+				setErrorState({...errorState, confirmPassword: ''})
+			} else setErrorState({...errorState, confirmPassword: CONFIRM_PASSWORD_ERROR})
 		}
 	}
 
@@ -142,7 +169,9 @@ export const SignUpForm = () => {
 
 	return (
 		<>
-			<AuthForm noValidate={true} onSubmit={handleSubmit}>
+			<AuthForm
+				noValidate={true}
+				onSubmit={handleSubmit}>
 				{errorState.serverError && <div><AuthError p0>{errorState.serverError}</AuthError></div>}
 				<AuthLabel>
 					<div>Name{errorState.username && <AuthError>{errorState.username}</AuthError>}</div>
@@ -153,10 +182,10 @@ export const SignUpForm = () => {
 							placeholder={'Your name'}
 							name={'username'}
 							value={username}
-							error={!!errorState.username}
+							error={!!String(errorState.username).trim()}
 							onChange={handleInputChange}
 							onBlur={handleBlur}
-							ref={nameRef} />
+						/>
 					</div>
 				</AuthLabel>
 				<AuthLabel>
@@ -169,10 +198,10 @@ export const SignUpForm = () => {
 							placeholder={'Your email'}
 							name={'email'}
 							value={email}
-							error={!!errorState.email}
+							error={!!String(errorState.email).trim()}
 							onChange={handleInputChange}
 							onBlur={handleBlur}
-							ref={emailRef} />
+						/>
 					</div>
 				</AuthLabel>
 				<AuthLabel>
@@ -185,10 +214,10 @@ export const SignUpForm = () => {
 							placeholder={'Your password'}
 							name={'password'}
 							value={password}
-							error={!!errorState.password}
+							error={!!String(errorState.password).trim()}
 							onChange={handleInputChange}
 							onBlur={handleBlur}
-							ref={passwordRef} />
+						/>
 					</div>
 				</AuthLabel>
 				<AuthLabel>
@@ -201,13 +230,13 @@ export const SignUpForm = () => {
 							placeholder={'Confirm password'}
 							name={'confirmPassword'}
 							value={confirmPassword}
-							error={!!errorState.confirmPassword}
+							error={!!String(errorState.confirmPassword).trim()}
 							onChange={handleInputChange}
 							onBlur={handleBlur}
-							ref={confirmPasswordRef} />
+						/>
 					</div>
 				</AuthLabel>
-				<AuthButton disabled={!formState.ready}>Sign Up</AuthButton>
+				<AuthButton disabled={!formState.ready || formState.pending}>Sign Up</AuthButton>
 				<AuthToggleWrapper>
 					Already have an account? <AuthLink to={'/login'} state={{from: fromPage}}>Sign in</AuthLink>
 				</AuthToggleWrapper>

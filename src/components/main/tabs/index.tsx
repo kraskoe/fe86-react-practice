@@ -10,6 +10,7 @@ export const Tabs = () => {
 		<TabsWrapper>
 			<TabLink to='/posts'>All</TabLink>
 			{user && <TabLink to='/favourites'>My Favourites</TabLink>}
+			{user && <TabLink to='/myposts'>My Posts</TabLink>}
 			<TabLink to='/popular'>Popular</TabLink>
 		</TabsWrapper>
 	)

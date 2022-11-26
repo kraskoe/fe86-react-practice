@@ -13,12 +13,9 @@ import {ReactComponent as ThumbsDownIcon} from '../../../images/thumbs_down-icon
 import {ReactComponent as BookmarkIcon} from '../../../images/bookmark-icon.svg';
 import {ReactComponent as MoreIcon} from '../../../images/more-icon.svg';
 import {Link} from 'react-router-dom';
-import {PostProps} from '../../../store/slices/posts/postsSlice';
-import {useAppSelector} from '../../../store/hooks/hooks';
-import {useLocalStorage} from '../../../storage/hooks';
-import {initFavourites} from '../../../storage/initValues';
-import {useEffect, useState} from 'react';
-import {log} from 'util';
+import {useAppDispatch, useAppSelector} from '../../../store/hooks/hooks';
+import { setFavourites } from '../../../store/slices/favourites/favouritesSlice';
+import {PostProps} from '../../../store/slices/posts/types';
 
 type PostPropsExtended = PostProps & {
 	mostPopular?: boolean,
@@ -36,25 +33,16 @@ function getLocalizedDate(date: string): string {
 
 export const Post = ({id, image, date, title, author, text, lesson_num, mostPopular, aside, search}: PostPropsExtended)=> {
 	const user = useAppSelector(state => state.auth.profileData.user);
-	// const [favourites, setFavourites] = useLocalStorage('favourites', initFavourites);
-	const [favourites, setFavourites] = useState(initFavourites);
+	const favourites = useAppSelector(state => state.favourites.favourites);
+	const dispatch = useAppDispatch();
 
 	const toggleFavourites = (id: number) => {
 		if (favourites.includes(id)) {
-			console.log('INCLUDES');
-			setFavourites(favourites.filter(item => item !== id))
+			dispatch(setFavourites({favourites: favourites.filter(item => item !== id)}));
 		} else {
-			console.log('NOT INCLUDES');
-			console.log(favourites);  // МАССИВ ВСЕГДА ПУСТОЙ
-			setFavourites(prevState => [...prevState, id]);
+			dispatch(setFavourites({favourites: [...favourites, id]}))
 		}
 }
-
-	useEffect(
-		() => {
-			console.log(favourites) // ПОКАЗЫВАЕТ ПРАВИЛЬНО
-		},  [favourites]
-	)
 
 	return (
 		<PostWrapper search={search} id={id.toString()}>
