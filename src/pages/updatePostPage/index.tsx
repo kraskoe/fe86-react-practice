@@ -3,11 +3,11 @@ import {PageTitle} from '../mainPage/style';
 import React from 'react';
 import {PostForm} from '../../components/postForm';
 
-export const CreatePostPage = () => {
+export const UpdatePostPage = () => {
 
 	return <>
 		<BreadCrumbs />
-		<PageTitle>Add post</PageTitle>
-		<PostForm />
+		<PageTitle>Update post</PageTitle>
+		<PostForm update />
 	</>
 }

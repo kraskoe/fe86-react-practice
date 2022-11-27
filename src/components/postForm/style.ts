@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const NewPostForm = styled.form`
+export const StyledPostForm = styled.form`
   padding: ${24/16}rem 0;
 
   label:last-of-type div:last-child {
@@ -11,7 +11,7 @@ export const NewPostForm = styled.form`
     padding: ${40/16}rem 0;
   }
 `
-NewPostForm.displayName = 'NewPostForm';
+StyledPostForm.displayName = 'StyledPostForm';
 
 export const InputFlexWrapper = styled.div`
 	display: flex;

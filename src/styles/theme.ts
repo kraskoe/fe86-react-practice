@@ -27,15 +27,16 @@ export const lightTheme: Theme = {
 };
 
 export const darkTheme: Theme = {
-	mainBg: '#313037',
-	primary: '#aa79c7',
-	primaryBg: '#be95d8',
-	secondary: '#c0aae4',
+	mainBg: '#132226',
+	primary: '#be9063',
+	primaryBg: '#525b56',
+	// primaryBg: '#a4978e',
+	secondary: '#525b56',
 	textPrimary: '#FFFFFF',
 	textSecondary: '#FFFFFF',
 	textInput: '#000000',
-	textPale: '#8D8E97',
-	error: '#FD3419',
+	textPale: '#a4978e',
+	error: '#fd7c19',
 	outline: '#DADADA',
-	menu: '#e0cfff',
+	menu: '#a4978e',
 };

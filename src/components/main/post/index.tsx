@@ -16,6 +16,9 @@ import {Link} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks/hooks';
 import { setFavourites } from '../../../store/slices/favourites/favouritesSlice';
 import {PostProps} from '../../../store/slices/posts/types';
+import {UserPostActions} from './userPostMenu/style';
+import {UserPostMenu} from './userPostMenu';
+import {MouseEvent} from 'react';
 
 type PostPropsExtended = PostProps & {
 	mostPopular?: boolean,
@@ -42,14 +45,33 @@ export const Post = ({id, image, date, title, author, text, lesson_num, mostPopu
 		} else {
 			dispatch(setFavourites({favourites: [...favourites, id]}))
 		}
-}
+	}
+
+	const toggleUserActions = (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		const target = event.target as HTMLElement;
+		target.closest('button')?.nextElementSibling?.classList.toggle('active');
+	}
 
 	return (
-		<PostWrapper search={search} id={id.toString()}>
+		<PostWrapper
+			search={search}
+			id={id.toString()}>
 			<Link to={`/post/${id}`}>
-				<PostContainer mostPopular={mostPopular} aside={aside} search={search}>
-					<PostImage src={image} alt='' mostPopular={mostPopular} aside={aside} search={search}/>
-					<PostData mostPopular={mostPopular} aside={aside} search={search}>
+				<PostContainer
+					mostPopular={mostPopular}
+					aside={aside}
+					search={search}>
+					<PostImage
+						src={image}
+						alt=''
+						mostPopular={mostPopular}
+						aside={aside}
+						search={search}/>
+					<PostData
+						mostPopular={mostPopular}
+						aside={aside}
+						search={search}>
 						<DatePosted>{getLocalizedDate(date)}</DatePosted>
 							{mostPopular ? <PopularPostTitle>{title}</PopularPostTitle> : <PostTitle>{title}</PostTitle>}
 						{mostPopular && <PostText>{text.slice(0, 300)}</PostText>}
@@ -57,12 +79,31 @@ export const Post = ({id, image, date, title, author, text, lesson_num, mostPopu
 				</PostContainer>
 			</Link>
 			<PostActionsWrapper>
-				<ActionButton disabled={!user}><ThumbsUpIcon /></ActionButton>
+				<ActionButton
+					title={'Endorse post'}
+					disabled={!user}
+				><ThumbsUpIcon /></ActionButton>
 				<PostPopularity>{lesson_num}</PostPopularity>
-				<ActionButton error={true} disabled={!user}><ThumbsDownIcon /></ActionButton>
+				<ActionButton
+					title={'Disapprove post'}
+					error
+					disabled={!user}
+				><ThumbsDownIcon /></ActionButton>
 				<ActionPanelFiller />
-				<ActionButton disabled={!user} className={favourites.includes(id) ? 'active' : ''} onClick={() => toggleFavourites(id)}><BookmarkIcon /></ActionButton>
-				<ActionButton disabled={user ? user.id !== author : true}><MoreIcon /></ActionButton>
+				<ActionButton
+					title={'Add to favourites'}
+					disabled={!user}
+					className={favourites.includes(id) ? 'active' : ''}
+					onClick={() => toggleFavourites(id)}
+				><BookmarkIcon /></ActionButton>
+				<UserPostActions>
+					<ActionButton
+						title={'Toggle actions menu'}
+						disabled={user ? user.id !== author : true}
+						onClick={toggleUserActions}
+					><MoreIcon /></ActionButton>
+					<UserPostMenu postId={id} />
+				</UserPostActions>
 			</PostActionsWrapper>
 		</PostWrapper>
 	)

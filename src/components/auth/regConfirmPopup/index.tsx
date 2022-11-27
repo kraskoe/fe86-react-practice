@@ -33,12 +33,9 @@ export const RegistrationConfirmationPopup = ({setConfirmRegistrationState, setA
 			setConfirmRegistrationState(false);
 			setActivationState(true);
 		} else {
-			console.log(resultAction);
 			if (resultAction.payload) {
 				setErrorState({...errorState , serverError: resultAction.payload.detail || resultAction.payload.uid || resultAction.payload.token || 'Invalid activation link'})
 			} else {
-				// Bad API response: status: ok, status code: 204, BUT request status: REJECTED
-				// setErrorState({...errorState , serverError: resultAction.error.message || 'Server error'})
 				setConfirmRegistrationState(false);
 				setActivationState(true);
 			}
