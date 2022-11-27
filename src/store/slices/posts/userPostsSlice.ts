@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {PostProps, PostsState, UserPostsState} from './types';
+import {PostProps, UserPostsState} from './types';
 import {fetchWithAuth} from '../../../api/fetchWithAuth';
 import {AppDispatch} from '../../index';
 
@@ -28,11 +28,6 @@ const userPostsSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
-		builder.addCase(fetchUserPosts.pending, (state) => {
-			state.status = 'pending';
-			state.posts = null;
-			state.error = null;
-		});
 		builder.addCase(fetchUserPosts.fulfilled, (state, action) => {
 			state.status = 'succeeded';
 			state.posts = action.payload;
@@ -40,6 +35,7 @@ const userPostsSlice = createSlice({
 		});
 		builder.addCase(fetchUserPosts.rejected, (state, action) => {
 			state.status = 'failed';
+			state.posts = null;
 			state.error = action.error?.message ? action.error?.message : 'Fetching posts error';
 		})
 	},

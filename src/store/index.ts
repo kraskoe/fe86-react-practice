@@ -1,4 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit';
+import {jwtRefreshMiddleware} from './middleware';
 import authReducer from './slices/auth/authSlice'
 import burgerReducer from './slices/burger/burgerSlice';
 import postsReducer from './slices/posts/postsSlice';
@@ -6,8 +7,7 @@ import postReducer from './slices/posts/postSlice';
 import allPostsReducer from './slices/posts/allPostsSlice';
 import searchReducer from './slices/search/searchSlice';
 import favouritesReducer from './slices/favourites/favouritesSlice';
-import newPostReducer from './slices/posts/newPostSlice';
-import {jwtRefreshMiddleware} from './middleware';
+import userPostReducer from './slices/posts/userPostSlice';
 import userPostsReducer from './slices/posts/userPostsSlice';
 
 const store = configureStore({
@@ -20,7 +20,7 @@ const store = configureStore({
 		allPosts: allPostsReducer,
 		search: searchReducer,
 		favourites: favouritesReducer,
-		newPost: newPostReducer,
+		newPost: userPostReducer,
 	},
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(jwtRefreshMiddleware),
 });

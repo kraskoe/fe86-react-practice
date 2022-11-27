@@ -35,11 +35,16 @@ export const FullscreenPost = ({id, image, date, title, author, text, lesson_num
 			<FullscreenPostText>{text}</FullscreenPostText>
 			<FullscreenActionButtonWrapper>
 				<FullscreenPopularButtonWrapper>
-					<ActionButton><ThumbsUpIcon/></ActionButton>
+					<ActionButton title={'Endorse post'}><ThumbsUpIcon/></ActionButton>
 					<PostPopularity>{lesson_num}</PostPopularity>
-					<ActionButton error={true}><ThumbsDownIcon/></ActionButton>
+					<ActionButton error title={'Disapprove post'}><ThumbsDownIcon/></ActionButton>
 				</FullscreenPopularButtonWrapper>
-				<ActionButton  disabled={!user} className={favourites.includes(id) ? 'active' : ''} onClick={() => toggleFavourites(id)}><BookmarkIcon/>Add to favourites</ActionButton>
+				<ActionButton
+					title={'Add to favourites'}
+					disabled={!user}
+					className={favourites.includes(id) ? 'active' : ''}
+					onClick={() => toggleFavourites(id)}
+				><BookmarkIcon/>Add to favourites</ActionButton>
 			</FullscreenActionButtonWrapper>
 		</PostWrapper>
 	)

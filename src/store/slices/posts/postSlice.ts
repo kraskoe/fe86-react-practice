@@ -7,12 +7,10 @@ export const fetchPost = createAsyncThunk<PostProps, string, {rejectValue: strin
 		const response = await fetch(id && `https://studapi.teachmeskills.by/blog/posts/${id}/`);
 
 		if (!response.ok) {
-			return rejectWithValue('Server Error');
+			return rejectWithValue(await response.json());
 		}
 
-		const data = await response.json();
-
-		return data;
+		return await response.json();
 	}
 );
 
@@ -33,13 +31,14 @@ const postSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
-		builder.addCase(fetchPost.pending, (state) => {
-			state.status = 'pending';
-			state.error = null;
-		});
 		builder.addCase(fetchPost.fulfilled, (state, action) => {
 			state.status = 'succeeded';
 			state.post = action.payload;
+		});
+		builder.addCase(fetchPost.rejected, (state, action) => {
+			state.status = 'failed';
+			state.post = null;
+			state.error = action.error.message || 'Server error';
 		});
 	},
 })

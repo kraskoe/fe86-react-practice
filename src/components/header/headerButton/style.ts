@@ -20,7 +20,11 @@ export const HeaderButton = styled.button`
 	}
 `
 
-export const MainMenuButton = styled.button`
+type MainMenuButtonProps = {
+	bb0?: boolean,
+}
+
+export const MainMenuButton = styled.button<MainMenuButtonProps>`
 	height: ${84/16}rem;
 	width: 100%;
 	font-weight: 600;
@@ -29,7 +33,7 @@ export const MainMenuButton = styled.button`
 	background-color: ${(props) => props.theme.menu};
 	color: ${(props) => props.theme.textSecondary};
 	border-top: ${(props) => props.theme.secondary} 1px solid;
-	border-bottom: ${(props) => props.theme.secondary} 1px solid;
+	border-bottom: ${(props) => props.theme.secondary} ${(props) => props.bb0 ? '0' : '1px'} solid;
 	
 	&:hover {
     color: ${(props) => props.theme.primary};

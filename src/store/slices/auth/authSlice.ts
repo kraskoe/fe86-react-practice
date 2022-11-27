@@ -105,7 +105,7 @@ export const registerNewUser = createAsyncThunk<IUser, IRegisterRequest, {reject
 		return (await response.json());
 	});
 
-export const confirmRegistration = createAsyncThunk<IActivation, IActivation, {rejectValue: IActivationError}>(
+export const confirmRegistration = createAsyncThunk<string, IActivation, {rejectValue: IActivationError}>(
 	'auth/confirmRegistration',
 	async (activationData, thunkApi) => {
 		const response = await fetch(`${baseUrl}${Endpoints.ACTIVATION}`,
@@ -117,11 +117,11 @@ export const confirmRegistration = createAsyncThunk<IActivation, IActivation, {r
 				body: JSON.stringify(activationData)
 			});
 
-		if (!response.ok) {
-			return thunkApi.rejectWithValue((await response.json()))
+		if (response.status !== 204) {
+			return thunkApi.rejectWithValue((await response.json()));
 		}
 
-		return (await response.json());
+		return 'Activation successful';
 	});
 
 const authSlice = createSlice({

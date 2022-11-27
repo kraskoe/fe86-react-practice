@@ -9,7 +9,7 @@ import {PostNavigation} from '../../components/main/postNavigation';
 import { BreadCrumbs } from '../../components/main/breadCrumbs';
 
 
-export const SinglePage = () => {
+export const SinglePostPage = () => {
 	const dispatch = useAppDispatch();
 	const postData = useAppSelector(state => state.post);
 	const allPosts = useAppSelector(state => state.allPosts);
