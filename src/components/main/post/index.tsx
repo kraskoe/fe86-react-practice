@@ -18,12 +18,20 @@ import { setFavourites } from '../../../store/slices/favourites/favouritesSlice'
 import {PostProps} from '../../../store/slices/posts/types';
 import {UserPostActions} from './userPostMenu/style';
 import {UserPostMenu} from './userPostMenu';
-import {MouseEvent} from 'react';
+import {MouseEvent, useEffect, useState} from 'react';
+import {getLocalstorageItem, setLocalstorageItem} from '../../../storage/utils';
 
 type PostPropsExtended = PostProps & {
 	mostPopular?: boolean,
 	aside?: boolean,
 	search?: boolean,
+}
+
+export interface ILocalStorageLikes {
+	id: number,
+	likes: number,
+	thumbsUp: boolean,
+	thumbsDown: boolean,
 }
 
 function getLocalizedDate(date: string): string {
@@ -38,6 +46,21 @@ export const Post = ({id, image, date, title, author, text, lesson_num, mostPopu
 	const user = useAppSelector(state => state.auth.profileData.user);
 	const favourites = useAppSelector(state => state.favourites.favourites);
 	const dispatch = useAppDispatch();
+	const localStorageLikes = localStorage.getItem('likes') ? getLocalstorageItem('likes') as ILocalStorageLikes[] : [];
+
+	if (!localStorageLikes.some(item => item.id === id)) {
+		localStorageLikes.push({id: id, likes: lesson_num, thumbsUp:false, thumbsDown:false});
+		setLocalstorageItem('likes', localStorageLikes);
+	}
+
+	const localStoragePost = localStorageLikes.find(item => item.id === id);
+	const [likes, setLikes] = useState(localStoragePost?.likes || 0);
+	const [thumbsUp, setThumbsUp] = useState(localStoragePost?.thumbsUp || false);
+	const [thumbsDown, setThumbsDown] = useState(localStoragePost?.thumbsDown || false);
+
+	useEffect(() => {
+		setLocalstorageItem('likes', localStorageLikes.map(item => item.id === id ? {id, likes, thumbsUp, thumbsDown} : item));
+	}, [likes])
 
 	const toggleFavourites = (id: number) => {
 		if (favourites.includes(id)) {
@@ -47,10 +70,40 @@ export const Post = ({id, image, date, title, author, text, lesson_num, mostPopu
 		}
 	}
 
-	const toggleUserActions = (event: MouseEvent<HTMLButtonElement>) => {
+	const toggleUserActions = (event: MouseEvent) => {
 		event.preventDefault();
 		const target = event.target as HTMLElement;
-		target.closest('button')?.nextElementSibling?.classList.toggle('active');
+		target.closest('.post-menu__wrapper')?.lastElementChild?.classList.toggle('active');
+	}
+
+	const handleThumbsUp = (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		if (thumbsUp) {
+			setLikes(likes - 1);
+			setThumbsUp(false);
+		} else if (thumbsDown) {
+			setLikes(likes + 2);
+			setThumbsUp(true);
+			setThumbsDown(false);
+		} else {
+			setLikes(likes + 1);
+			setThumbsUp(true);
+		}
+	}
+
+	const handleThumbsDown = (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		if (thumbsDown) {
+			setLikes(likes + 1);
+			setThumbsDown(false);
+		} else if (thumbsUp) {
+			setLikes(likes - 2);
+			setThumbsDown(true);
+			setThumbsUp(false);
+		} else {
+			setLikes(likes - 1);
+			setThumbsDown(true);
+		}
 	}
 
 	return (
@@ -82,12 +135,16 @@ export const Post = ({id, image, date, title, author, text, lesson_num, mostPopu
 				<ActionButton
 					title={'Endorse post'}
 					disabled={!user}
+					className={thumbsUp ? 'active' : ''}
+					onClick={handleThumbsUp}
 				><ThumbsUpIcon /></ActionButton>
-				<PostPopularity>{lesson_num}</PostPopularity>
+				<PostPopularity>{likes}</PostPopularity>
 				<ActionButton
 					title={'Disapprove post'}
 					error
 					disabled={!user}
+					className={thumbsDown ? 'active' : ''}
+					onClick={handleThumbsDown}
 				><ThumbsDownIcon /></ActionButton>
 				<ActionPanelFiller />
 				<ActionButton
@@ -96,11 +153,14 @@ export const Post = ({id, image, date, title, author, text, lesson_num, mostPopu
 					className={favourites.includes(id) ? 'active' : ''}
 					onClick={() => toggleFavourites(id)}
 				><BookmarkIcon /></ActionButton>
-				<UserPostActions>
+				<UserPostActions
+					onMouseEnter={toggleUserActions}
+					onMouseLeave={toggleUserActions}
+					className={'post-menu__wrapper'}
+				>
 					<ActionButton
 						title={'Toggle actions menu'}
 						disabled={user ? user.id !== author : true}
-						onClick={toggleUserActions}
 					><MoreIcon /></ActionButton>
 					<UserPostMenu postId={id} />
 				</UserPostActions>
