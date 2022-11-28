@@ -27,14 +27,14 @@ export const PostForm = (props: IPostFormProps) => {
 	}
 	const [formState, setFormState] = useState(initialFormState);
 	const [errorState, setErrorState] = useState(initialErrorState);
-	const [uploadedFile, setUploadedFile] = useState<File | Blob | string | null>(null);
+	const [uploadedFile, setUploadedFile] = useState<File | Blob | null>(null);
 	const {postTitle, text} = formState;
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const author = useAppSelector(state => state.auth.profileData.user?.id);
 	const postData = useAppSelector(state => state.post);
-	const post = postData.post;
 	const {id} = useParams();
+	const [fileDataURL, setFileDataURL] = useState(null);
 
 	const isFormReady = () => {
 		if (formState.postTitle.trim() &&
@@ -51,32 +51,39 @@ export const PostForm = (props: IPostFormProps) => {
 
 	useEffect(isFormReady,[formState.postTitle, formState.text, uploadedFile]);
 	useEffect(() => {
+		const fileReader = new FileReader();
+		let isCancel = false;
+		if (uploadedFile) {
+			fileReader.onload = (e: any) => {
+				const { result } = e.target;
+				if (result && !isCancel) {
+					setFileDataURL(result)
+				}
+			}
+			fileReader.readAsDataURL(uploadedFile);
+		}
+		return () => {
+			isCancel = true;
+			if (fileReader && fileReader.readyState === 1) {
+				fileReader.abort();
+			}
+		}
+
+	}, [uploadedFile]);
+	useEffect(() => {
 		props.update && id && dispatch(fetchPost(id))
 			.then(data => data.payload as PostProps)
 			.then(data => {
 				setFormState({...formState, postTitle: data?.title, text: data?.text});
 				return data
 			})
-			.then(imageData => fetch(imageData.image, {
-				headers: {
-					// 'Access-Control-Allow-Origin': 'http://localhost:3000',
-				},
-				// mode: 'no-cors',
-				// responseType: 'blob',
-				}))
-			// .then(res => console.log(res))
-			.then(response => response.blob())
-			// .then(response => {
-			// 	return response.blob().then(blob => {
-			// 		return {
-			// 			contentType: response.headers.get("Content-Type"),
-			// 			raw: blob
-			// 		}
-			// 	})
-			// })
-			// .then(blob => console.log(blob))
-			.then(blob => new File([blob], 'my_image'))
-			// .then(file => setUploadedFile(file))
+			.then(data => {
+				const url = data.image.replace('https://tms-studapi-dev.s3.amazonaws.com', '');
+				return fetch(url)
+					.then(response => response.blob())
+					.then(blob => new File([blob], url.replace('/media', '')))
+			})
+			.then(file => setUploadedFile(file))
 			.catch(error => console.log(error));
 	}, [id]);
 
@@ -163,6 +170,10 @@ export const PostForm = (props: IPostFormProps) => {
 		{!props.update || postData.status === 'succeeded' ?
 			<>
 				<StyledPostForm onSubmit={handleSubmit} encType={'multipart/form-data'}>
+					{fileDataURL && <div style={{display: 'flex', justifyContent: 'center', maxHeight: '20rem'}}>
+						<img src={fileDataURL} alt={''} style={{overflow: 'hidden', objectFit: 'cover'}} />
+					</div>
+					}
 					<InputFlexWrapper>
 						<div style={{flex: '1 0 48%'}}>
 							<AuthLabel>

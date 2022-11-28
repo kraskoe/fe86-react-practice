@@ -46,10 +46,10 @@ export const MainMenu = () => {
 			{user && <RequireAuth>
 				<UserCredentials />
 			</RequireAuth>}
-			<Link to='/'><MainMenuButton bb0 >Home</MainMenuButton></Link>
+			<Link to='/'><MainMenuButton >Home</MainMenuButton></Link>
 			{user && <RequireAuth>
 				<Link to={'/posts/new'}>
-					<MainMenuButton>Add Post</MainMenuButton>
+					<MainMenuButton bt0>Add Post</MainMenuButton>
 				</Link>
 			</RequireAuth>}
 			<MainMenuFiller />
