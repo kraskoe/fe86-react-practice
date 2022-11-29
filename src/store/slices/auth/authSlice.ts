@@ -11,9 +11,7 @@ import {
 import {baseUrl, Endpoints} from './endpoints';
 import {
 	getLocalstorageItem,
-	getSessionstorageItem,
 	setLocalstorageItem,
-	setSessionstorageItem
 } from '../../../storage/utils';
 import {useAppDispatch} from '../../hooks/hooks';
 
@@ -22,8 +20,8 @@ const initialState: IAuthState = {
 		error: null,
 	},
 	profileData: {
-		user: sessionStorage.getItem('user') ?
-			getSessionstorageItem('user') :
+		user: localStorage.getItem('user') ?
+			getLocalstorageItem('user') :
 			null,
 		error: null,
 	},
@@ -163,7 +161,7 @@ const authSlice = createSlice({
 			}
 		});
 		builder.addCase(fetchUserData.fulfilled, (state, {payload}) => {
-			setSessionstorageItem('user', payload);
+			setLocalstorageItem('user', payload);
 			state.profileData.user = payload;
 			state.profileData.error = null;
 		});

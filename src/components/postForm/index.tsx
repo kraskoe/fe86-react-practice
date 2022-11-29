@@ -1,6 +1,6 @@
-import {CancelButton, FileInput, InputFlexWrapper, StyledPostForm, TextArea} from './style';
+import {CancelButton, FileInput, InputFlexWrapper, StyledFileInput, StyledPostForm, TextArea} from './style';
 import {AuthButton, AuthError, AuthLabel, AuthTextInput} from '../auth/shared/style';
-import React, {FormEvent, useEffect, useState} from 'react';
+import React, {FormEvent, MouseEvent, useEffect, useRef, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../store/hooks/hooks';
 import {createNewPost, updatePost} from '../../store/slices/posts/userPostSlice';
@@ -27,7 +27,7 @@ export const PostForm = (props: IPostFormProps) => {
 	}
 	const [formState, setFormState] = useState(initialFormState);
 	const [errorState, setErrorState] = useState(initialErrorState);
-	const [uploadedFile, setUploadedFile] = useState<File | Blob | null>(null);
+	const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 	const {postTitle, text} = formState;
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
@@ -35,6 +35,7 @@ export const PostForm = (props: IPostFormProps) => {
 	const postData = useAppSelector(state => state.post);
 	const {id} = useParams();
 	const [fileDataURL, setFileDataURL] = useState(null);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const isFormReady = () => {
 		if (formState.postTitle.trim() &&
@@ -81,11 +82,16 @@ export const PostForm = (props: IPostFormProps) => {
 				const url = data.image.replace('https://tms-studapi-dev.s3.amazonaws.com', '');
 				return fetch(url)
 					.then(response => response.blob())
-					.then(blob => new File([blob], url.replace('/media', '')))
+					.then(blob => new File([blob], url.replace('/media/', '')))
 			})
 			.then(file => setUploadedFile(file))
 			.catch(error => console.log(error));
 	}, [id]);
+
+	const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+		event.preventDefault();
+		inputRef.current?.click();
+	}
 
 	const handleUpload = async (formData: FormData) => {
 		setFormState({...formState, pending: true});
@@ -194,11 +200,15 @@ export const PostForm = (props: IPostFormProps) => {
 							<AuthLabel>
 								<div>Image{errorState.image && <AuthError>{errorState.image}</AuthError>}</div>
 								<div style={{display: 'flex'}}>
+									<StyledFileInput onClick={handleClick}>
+										{uploadedFile ? uploadedFile.name : 'Choose file'}
+									</StyledFileInput>
 									<FileInput
 										type={'file'}
 										name={'image'}
 										accept={'image/*,.png,.jpg,.gif,.web,.webp'}
 										onChange={handleFileChange}
+										ref={inputRef}
 									/>
 								</div>
 							</AuthLabel>

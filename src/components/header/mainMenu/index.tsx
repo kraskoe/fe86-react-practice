@@ -29,8 +29,6 @@ export const MainMenu = () => {
 	};
 
 	const handleLogOut = () => {
-		sessionStorage.clear();
-		dispatch(setFavourites({favourites: []}));
 		dispatch(logOut());
 	};
 
