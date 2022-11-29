@@ -68,6 +68,37 @@ export const CancelButton = styled.button`
 CancelButton.displayName = 'CancelButton';
 
 export const FileInput = styled.input`
+  width: 0;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+	// display: none;
+	// background-color: ${(props) => props.theme.textPrimary};
+	// color: ${(props) => props.theme.textInput};
+	// padding: ${18/16}rem ${20/16}rem;
+	// flex: 1 0 auto;
+	// outline: none;
+	// border: transparent 2px solid;
+	// font-size: 1rem;
+	// cursor: pointer;
+  // font-family: 'Inter', sans-serif;
+	//
+  // &::-webkit-file-upload-button {
+	// 	display: none;
+	// }
+	//
+	// &::placeholder {
+	// 	font-size: 1rem;
+  //   color: ${(props) => props.theme.textPale};
+  //   font-family: 'Inter', sans-serif;
+  // }
+`
+FileInput.displayName = 'FileInput';
+
+export const StyledFileInput = styled.div`
+	text-align: center;
 	background-color: ${(props) => props.theme.textPrimary};
 	color: ${(props) => props.theme.textInput};
 	padding: ${18/16}rem ${20/16}rem;
@@ -77,15 +108,5 @@ export const FileInput = styled.input`
 	font-size: 1rem;
 	cursor: pointer;
   font-family: 'Inter', sans-serif;
-
-  &::-webkit-file-upload-button {
-		display: none;
-	}
-	
-	&::placeholder {
-		font-size: 1rem;
-    color: ${(props) => props.theme.textPale};
-    font-family: 'Inter', sans-serif;
-  }
 `
-FileInput.displayName = 'FileInput';
+StyledFileInput.displayName = 'StyledFileInput';
