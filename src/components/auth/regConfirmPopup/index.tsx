@@ -1,5 +1,5 @@
-import {PageTitle} from '../../../pages/mainPage/style';
 import React, {Dispatch, FormEvent, SetStateAction, useEffect, useState} from 'react';
+import {PageTitle} from '../../../pages/mainPage/style';
 import {AuthButton, AuthError, AuthForm, AuthLabel, AuthTextInput, PopupContainer, PopupWrapper} from '../shared/style';
 import {confirmRegistration} from '../../../store/slices/auth/authSlice';
 import {useAppDispatch} from '../../../store/hooks/hooks';
@@ -16,10 +16,10 @@ export const RegistrationConfirmationPopup = ({setConfirmRegistrationState, setA
 		link: '',
 	};
 	const [formState, setFormState] = useState(initialFormState);
+	const [errorState, setErrorState] = useState({serverError: ''});
+	const dispatch = useAppDispatch();
 	const {link} = formState;
 	const patternLink = /^http:\/\/studapi.teachmeskills.by\/\/activate\/\w+\/\w+-\w+$/
-	const dispatch = useAppDispatch();
-	const [errorState, setErrorState] = useState({serverError: ''});
 
 	useEffect(() => {
 		document.body.style.overflow = 'hidden'
@@ -44,7 +44,6 @@ export const RegistrationConfirmationPopup = ({setConfirmRegistrationState, setA
 
 	const handleInputChange = (event: FormEvent) => {
 		const { value } = event.target as HTMLInputElement;
-
 		event.preventDefault();
 
 		if (value.trim()) {

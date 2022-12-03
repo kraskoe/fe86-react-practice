@@ -1,6 +1,6 @@
-import {AuthButton, AuthError, AuthForm, AuthLabel, AuthLink, AuthTextInput, AuthToggleWrapper} from '../shared/style';
 import React, {FormEvent, useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
+import {AuthButton, AuthError, AuthForm, AuthLabel, AuthLink, AuthTextInput, AuthToggleWrapper} from '../shared/style';
 import {registerNewUser} from '../../../store/slices/auth/authSlice';
 import {IRegisterRequest} from '../../../store/slices/auth/types';
 import {useAppDispatch} from '../../../store/hooks/hooks';
@@ -37,10 +37,10 @@ export const SignUpForm = () => {
 	const [errorState, setErrorState] = useState(initialErrorState);
 	const [confirmRegistrationState, setConfirmRegistrationState] = useState(false);
 	const [activationState, setActivationState] = useState(false);
-	const {username, email, password, confirmPassword} = formState;
 	const location = useLocation();
-	const fromPage = location.state?.from || '/';
 	const dispatch = useAppDispatch();
+	const {username, email, password, confirmPassword} = formState;
+	const fromPage = location.state?.from || '/';
 
 	const setFormReadyState = () => {
 		if (formState.username.trim() &&

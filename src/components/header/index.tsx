@@ -1,8 +1,8 @@
+import React from 'react';
 import {HeaderWrapper} from './style';
 import Burger from './burger';
 import {Search} from './search';
 import {UserCredentials} from './userCredentials';
-import React from 'react';
 import userIcon from '../../images/user-icon.svg';
 import {useAppSelector} from '../../store/hooks/hooks';
 import { TabletOrDesktop } from '../../utils/detectScreenSize';

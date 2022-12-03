@@ -1,6 +1,6 @@
-import {lightTheme, darkTheme} from '../styles/theme';
 import {createContext, FC, PropsWithChildren, useState} from 'react';
 import {ThemeProvider} from 'styled-components';
+import {lightTheme, darkTheme} from '../styles/theme';
 
 type MainThemeContextProps = {
 	mainTheme: string,

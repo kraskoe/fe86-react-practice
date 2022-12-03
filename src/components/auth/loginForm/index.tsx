@@ -23,10 +23,10 @@ export const LoginForm = () => {
 	}
 	const [formState, setFormState] = useState(initialFormState);
 	const [errorState, setErrorState] = useState(initialErrorState);
-	const {email, password} = formState;
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
+	const {email, password} = formState;
 	const fromPage = location.state?.from || '/';
 
 	const setFormReadyState = () => {
@@ -42,17 +42,6 @@ export const LoginForm = () => {
 
 	useEffect(setFormReadyState,[formState.email, formState.password]);
 
-	const handleGetToken = async (loginData: ILoginRequest) => {
-		setFormState({...formState, pending: true});
-		const resultAction = await dispatch(getToken(loginData))
-		if (getToken.fulfilled.match(resultAction)) {
-			handleFetchUserData(resultAction.payload.access);
-		} else {
-			setErrorState({...errorState , serverError: resultAction.error.message || 'Login error'})
-			setFormState({...formState, pending: false});
-		}
-	}
-
 	const handleFetchUserData = async (accessToken: string) => {
 		const resultAction = await dispatch(fetchUserData(accessToken))
 		if (fetchUserData.fulfilled.match(resultAction)) {
@@ -60,6 +49,17 @@ export const LoginForm = () => {
 			setFormState({...formState, pending: false});
 		} else {
 			setErrorState({...errorState , serverError: resultAction.error.message || 'Error fetching user data'})
+			setFormState({...formState, pending: false});
+		}
+	}
+
+	const handleGetToken = async (loginData: ILoginRequest) => {
+		setFormState({...formState, pending: true});
+		const resultAction = await dispatch(getToken(loginData))
+		if (getToken.fulfilled.match(resultAction)) {
+			await handleFetchUserData(resultAction.payload.access);
+		} else {
+			setErrorState({...errorState , serverError: resultAction.error.message || 'Login error'})
 			setFormState({...formState, pending: false});
 		}
 	}

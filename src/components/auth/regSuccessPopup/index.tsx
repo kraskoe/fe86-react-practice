@@ -1,7 +1,7 @@
-import {AuthButton, AuthForm,PopupContainer, PopupWrapper} from '../shared/style';
-import {PageTitle} from '../../../pages/mainPage/style';
 import {Dispatch, SetStateAction, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {AuthButton, AuthForm,PopupContainer, PopupWrapper} from '../shared/style';
+import {PageTitle} from '../../../pages/mainPage/style';
 
 interface RegistrationSuccessPopupProps {
 	setActivationState: Dispatch<SetStateAction<boolean>>,

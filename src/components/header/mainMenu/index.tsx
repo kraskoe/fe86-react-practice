@@ -1,18 +1,17 @@
+import React, {useContext, useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import {MainMenuFiller, MainMenuWrapper, ThemeButtonWrapper} from './style';
 import {UserCredentials} from '../userCredentials';
 import { Border } from '../burger/style';
-import React, {useContext, useEffect} from 'react';
 import {MainMenuButton, MainMenuLogButton, ThemeButton} from '../headerButton/style';
 import lightIcon from '../../../images/light-icon.svg'
 import darkIcon from '../../../images/dark-icon.svg'
 import { MainThemeContext } from '../../../context/themeState';
-import {Link} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks/hooks';
 import {toggleMenuOpen} from '../../../store/slices/burger/burgerSlice';
 import {RequireAuth} from '../../../containers/requireAuth';
 import {logOut} from '../../../store/slices/auth/authSlice';
 import {FromLink} from '../../shared/fromLink';
-import {setFavourites} from '../../../store/slices/favourites/favouritesSlice';
 
 export const MainMenu = () => {
 	const user = useAppSelector((state) => state.auth.profileData.user);

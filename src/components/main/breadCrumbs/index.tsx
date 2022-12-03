@@ -1,7 +1,7 @@
-import useBreadcrumbs, { BreadcrumbComponentProps } from 'use-react-router-breadcrumbs';
 import {FunctionComponent, ReactNode} from 'react';
-import {BreadCrumbNav, StyledBreadCrumbLink} from './style';
 import {Link, useMatch} from 'react-router-dom';
+import useBreadcrumbs, { BreadcrumbComponentProps } from 'use-react-router-breadcrumbs';
+import {BreadCrumbNav, StyledBreadCrumbLink} from './style';
 
 interface BreadCrumbLinkProps {
 	children: ReactNode,

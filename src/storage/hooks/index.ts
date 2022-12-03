@@ -1,5 +1,6 @@
 import {Dispatch, useEffect, useState} from 'react';
 
+//--- Didn't come in handy ---
 export function useLocalStorage<T>(storageKey: string, fallbackState: T): [T, Dispatch<T>] {
 	const [value, setValue] = useState(localStorage.getItem(storageKey) ?
 		JSON.parse(localStorage.getItem(storageKey) || '') :

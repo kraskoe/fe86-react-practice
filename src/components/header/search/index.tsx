@@ -1,8 +1,8 @@
 import React, {FormEvent, KeyboardEventHandler, useEffect, useRef, useState} from 'react';
+import { useLocation, useNavigate} from 'react-router-dom';
 import {SearchCancel, DummySearch, SearchInput, SearchForm} from './style';
 import searchIcon from '../../../images/search-icon.svg'
 import {HeaderButton} from '../headerButton/style';
-import { useLocation, useNavigate} from 'react-router-dom';
 import {useAppDispatch} from '../../../store/hooks/hooks';
 import {setSearch} from '../../../store/slices/search/searchSlice';
 
@@ -12,10 +12,10 @@ export const Search = () => {
 	const dispatch = useAppDispatch();
 	const location = useLocation();
 	const navigate = useNavigate();
-	const paths = ['favourites', 'popular', 'posts', 'search'];
-	let query;
 	const inputRef = useRef<HTMLInputElement>(null);
 	const locRef = useRef('');
+	const paths = ['favourites', 'popular', 'posts', 'search'];
+	let query;
 
 	useEffect(() => {
 		paths.some(item => location.pathname.includes(item)) ?

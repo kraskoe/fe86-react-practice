@@ -1,6 +1,6 @@
+import {useLocation, useParams} from 'react-router-dom';
 import { PaginationWrapper } from './style'
 import {PaginationLink} from './paginationLink';
-import {useLocation, useParams} from 'react-router-dom';
 import { TabletOrDesktop } from '../../../utils/detectScreenSize';
 import {ReactComponent as ArrowLeftIcon} from '../../../images/arrow-left-icon.svg';
 import {ReactComponent as ArrowRightIcon} from '../../../images/arrow-right-icon.svg';

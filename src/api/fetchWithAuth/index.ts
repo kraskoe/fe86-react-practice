@@ -1,7 +1,7 @@
+import jwtDecode from 'jwt-decode';
 import {getLocalstorageItem} from '../../storage/utils';
 import {logOut, refreshToken} from '../../store/slices/auth/authSlice';
 import {AppDispatch} from '../../store';
-import jwtDecode from 'jwt-decode';
 
 export async function fetchWithAuth(url: string, options: RequestInit, dispatch: AppDispatch) {
 	let tokenData = null;

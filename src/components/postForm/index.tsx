@@ -28,13 +28,13 @@ export const PostForm = (props: IPostFormProps) => {
 	const [formState, setFormState] = useState(initialFormState);
 	const [errorState, setErrorState] = useState(initialErrorState);
 	const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+	const [fileDataURL, setFileDataURL] = useState<string>();
 	const {postTitle, text} = formState;
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const author = useAppSelector(state => state.auth.profileData.user?.id);
 	const postData = useAppSelector(state => state.post);
 	const {id} = useParams();
-	const [fileDataURL, setFileDataURL] = useState(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const isFormReady = () => {
@@ -52,25 +52,27 @@ export const PostForm = (props: IPostFormProps) => {
 
 	useEffect(isFormReady,[formState.postTitle, formState.text, uploadedFile]);
 	useEffect(() => {
-		const fileReader = new FileReader();
-		let isCancel = false;
+		//--- 2nd variant using fileReader ---
+		// const fileReader = new FileReader();
+		// let isCancel = false;
 		if (uploadedFile) {
-			fileReader.onload = (e: any) => {
-				const { result } = e.target;
-				if (result && !isCancel) {
-					setFileDataURL(result)
-				}
-			}
-			fileReader.readAsDataURL(uploadedFile);
+			setFileDataURL(URL.createObjectURL(uploadedFile));
+			// fileReader.onload = (e: any) => {
+			// 	const { result } = e.target;
+			// 	if (result && !isCancel) {
+			// 		setFileDataURL(result)
+			// 	}
+			// }
+			// fileReader.readAsDataURL(uploadedFile);
 		}
-		return () => {
-			isCancel = true;
-			if (fileReader && fileReader.readyState === 1) {
-				fileReader.abort();
-			}
-		}
-
+		// return () => {
+		// 	isCancel = true;
+		// 	if (fileReader && fileReader.readyState === 1) {
+		// 		fileReader.abort();
+		// 	}
+		// }
 	}, [uploadedFile]);
+
 	useEffect(() => {
 		props.update && id && dispatch(fetchPost(id))
 			.then(data => data.payload as PostProps)

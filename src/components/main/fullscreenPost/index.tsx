@@ -1,3 +1,4 @@
+import React, {MouseEvent, useEffect, useState} from 'react';
 import {
 	FullscreenActionButtonWrapper,
 	FullscreenPopularButtonWrapper,
@@ -9,7 +10,6 @@ import {ActionButton, PostPopularity, PostWrapper} from '../post/style';
 import {ReactComponent as ThumbsUpIcon} from '../../../images/thumbs_up-icon.svg';
 import {ReactComponent as ThumbsDownIcon} from '../../../images/thumbs_down-icon.svg';
 import {ReactComponent as BookmarkIcon} from '../../../images/bookmark-icon.svg';
-import React, {MouseEvent, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks/hooks';
 import {setFavourites} from '../../../store/slices/favourites/favouritesSlice';
 import {PostProps} from '../../../store/slices/posts/types';
